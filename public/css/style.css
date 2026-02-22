@@ -1,0 +1,266 @@
+/* ================= RESET ================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    font-family: 'Prompt', sans-serif;
+    background-color: #f4f6f9;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+    width: 100%;
+    padding: 18px 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    color: white;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-weight: 400;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links .active {
+    border-bottom: 2px solid white;
+}
+
+/* ================= PAGE TITLE ================= */
+.page-title {
+    padding: 40px 60px 10px;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+/* ================= CARDS ================= */
+.card-container {
+    display: flex;
+    gap: 30px;
+    padding: 20px 60px;
+}
+
+.card {
+    flex: 1;
+    background: white;
+    padding: 30px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    text-align: center;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.card p {
+    font-size: 30px;
+    font-weight: 600;
+    color: #4e73df;
+}
+
+/* ================= TABLE ================= */
+.table-container {
+    margin: 30px 60px;
+    background: white;
+    padding: 25px;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    background: #4e73df;
+    color: white;
+    padding: 14px;
+    text-align: left;
+}
+
+td {
+    padding: 14px;
+    border-bottom: 1px solid #eee;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8f9fc;
+}
+
+tbody tr:hover {
+    background-color: #eef2ff;
+}
+
+/* ================= STATUS ================= */
+.status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.in-progress {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+/* ================= BUTTONS ================= */
+button {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background-color: #4e73df;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #2e59d9;
+}
+
+.btn-danger {
+    background-color: #e74a3b;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c0392b;
+}
+
+.btn-add {
+    background-color: #1cc88a;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 8px;
+}
+
+.btn-add:hover {
+    background-color: #17a673;
+}
+
+/* ================= SEARCH ================= */
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 60px 0;
+}
+
+.search-box {
+    display: flex;
+    gap: 5px;
+}
+
+.search-box input {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.search-box button {
+    background-color: #4e73df;
+    color: white;
+    border-radius: 8px;
+}
+
+.search-box button:hover {
+    background-color: #2e59d9;
+}
+
+/* ================= FORM ================= */
+.form-container {
+    width: 400px;
+    margin: 40px auto;
+    padding: 30px;
+    background: white;
+    border-radius: 18px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin-top: 12px;
+    font-weight: 500;
+}
+
+input, select {
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.form-buttons {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-secondary {
+    background-color: #858796;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #60616f;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .card-container {
+        flex-direction: column;
+    }
+
+    .table-header,
+    .page-title,
+    .card-container,
+    .table-container {
+        padding-left: 20px;
+        padding-right: 20px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+
+    th, td {
+        font-size: 14px;
+        padding: 10px;
+    }
+}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head id="layout-head"></head>
+
+<body>
+    <div id="layout-navbar"></div>
+
+
+    <div class="page-title">
+        <h1>Project List</h1>
+    </div>
+
+    <!-- ส่วนเพิ่มปุ่มและค้นหา -->
+    <div class="table-header">
+        <button class="btn-add" onclick="location.href='add-project.ejs'">
+            + เพิ่มข้อมูล
+        </button>
+
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="ค้นหาชื่อโปรเจกต์...">
+            <button onclick="searchProject()">ค้นหา</button>
+        </div>
+    </div>
+
+    <div class="table-container">
+        <table id="projectTable">
+            <thead>
+                <tr>
+                    <th>Project ID</th>
+                    <th>User ID</th>
+                    <th>Project Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>101</td>
+                    <td>Website Redesign</td>
+                    <td>2026-01-01</td>
+                    <td>2026-03-01</td>
+                    <td class="status in-progress">In Progress</td>
+                    <td>
+                        <button class="btn-primary" onclick="location.href='edit-project.ejs'">Edit</button>
+                        <button class="btn-danger" onclick="return confirm('ยืนยันการลบ?')">Delete</button>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>2</td>
+                    <td>102</td>
+                    <td>Mobile App</td>
+                    <td>2026-02-01</td>
+                    <td>2026-05-01</td>
+                    <td class="status completed">Completed</td>
+                    <td>
+                        <button class="btn-primary" onclick="location.href='edit-project.ejs'">Edit</button>
+                        <button class="btn-danger" onclick="return confirm('ยืนยันการลบ?')">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function searchProject() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let table = document.getElementById("projectTable");
+            let rows = table.getElementsByTagName("tr");
+
+            for (let i = 1; i < rows.length; i++) {
+                let projectName = rows[i].getElementsByTagName("td")[2];
+                if (projectName) {
+                    let textValue = projectName.textContent || projectName.innerText;
+                    rows[i].style.display = textValue.toLowerCase().includes(input)
+                        ? ""
+                        : "none";
+                }
+            }
+        }
+    </script>
+    <script>
+        fetch("../partials/header.ejs")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("layout-head").innerHTML = data.split("<nav")[0];
+                document.getElementById("layout-navbar").innerHTML = "<nav" + data.split("<nav")[1];
+            });
+    </script>
+
+</body>
+
+</html>

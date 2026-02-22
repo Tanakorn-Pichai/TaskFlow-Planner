@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head id="layout-head"></head
+
+<body>
+    <div id="layout-navbar"></div>
+
+
+    <div class="page-title">
+        <h1>เพิ่มข้อมูลโปรเจกต์</h1>
+    </div>
+
+
+
+    <div class="form-container">
+        <form action="#" method="POST">
+
+            <label>User ID</label>
+            <input type="number" name="user_id" required>
+
+            <label>Project Name</label>
+            <input type="text" name="project_name" required>
+
+            <label>Start Date</label>
+            <input type="date" name="start_date" required>
+
+            <label>End Date</label>
+            <input type="date" name="end_date" required>
+
+            <label>Status</label>
+            <select name="status" required>
+                <option value="">-- เลือกสถานะ --</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Pending">Pending</option>
+            </select>
+
+            <div class="form-buttons">
+                <button type="submit" class="btn-primary">บันทึก</button>
+                <button type="button" class="btn-secondary" onclick="history.back()">ยกเลิก</button>
+            </div>
+
+        </form>
+    </div>
+    <script>
+        fetch("../partials/header.ejs")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("layout-head").innerHTML = data.split("<nav")[0];
+                document.getElementById("layout-navbar").innerHTML = "<nav" + data.split("<nav")[1];
+            });
+    </script>
+
+</body>
+
+</html>

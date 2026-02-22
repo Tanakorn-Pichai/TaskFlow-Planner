@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head id="layout-head"></head>
+
+<body>
+    <div id="layout-navbar"></div>
+
+
+
+    <div class="page-title">
+        <h1>Dashboard Report</h1>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="card-container">
+        <div class="card">
+            <h3>Total Projects</h3>
+            <p>12</p>
+        </div>
+
+        <div class="card">
+            <h3>In Progress</h3>
+            <p>5</p>
+        </div>
+
+        <div class="card">
+            <h3>Completed</h3>
+            <p>7</p>
+        </div>
+    </div>
+
+    <!-- Report Table -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Status</th>
+                    <th>Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Website Redesign</td>
+                    <td class="status in-progress">In Progress</td>
+                    <td>60%</td>
+                </tr>
+                <tr>
+                    <td>Mobile App</td>
+                    <td class="status completed">Completed</td>
+                    <td>100%</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+        fetch("../partials/header.ejs")
+            .then(res => res.text())
+            .then(data => {
+                document.getElementById("layout-head").innerHTML = data.split("<nav")[0];
+                document.getElementById("layout-navbar").innerHTML = "<nav" + data.split("<nav")[1];
+            });
+    </script>
+
+</body>
+
+</html>
