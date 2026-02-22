@@ -1,59 +1,43 @@
 <!DOCTYPE html>
 <html lang="th">
 
-<head id="layout-head"></head
+<%- include('partials/header', { title: 'แก้ไขข้อมูลโปรเจกต์' }) %>
 
-<body>
-   <div id="layout-navbar"></div>
+<div class="page-title">
+    <h1>แก้ไขข้อมูลโปรเจกต์</h1>
+</div>
 
+<div class="form-container">
+    <form action="/project/update/1" method="POST">
 
-    <div class="page-title">
-        <h1>แก้ไขข้อมูลโปรเจกต์</h1>
-    </div>
+        <label>Project ID</label>
+        <input type="text" name="project_id" value="1" readonly>
 
+        <label>User ID</label>
+        <input type="number" name="user_id" value="101" required>
 
+        <label>Project Name</label>
+        <input type="text" name="project_name" value="Website Redesign" required>
 
-    <div class="form-container">
-        <form action="#" method="POST">
+        <label>Start Date</label>
+        <input type="date" name="start_date" value="2026-01-01" required>
 
-            <label>Project ID</label>
-            <input type="text" name="project_id" value="1" readonly>
+        <label>End Date</label>
+        <input type="date" name="end_date" value="2026-03-01" required>
 
-            <label>User ID</label>
-            <input type="number" name="user_id" value="101" required>
+        <label>Status</label>
+        <select name="status" required>
+            <option value="In Progress" selected>In Progress</option>
+            <option value="Completed">Completed</option>
+            <option value="Pending">Pending</option>
+        </select>
 
-            <label>Project Name</label>
-            <input type="text" name="project_name" value="Website Redesign" required>
+        <div class="form-buttons">
+            <button type="submit" class="btn-primary">อัปเดต</button>
+            <button type="button" class="btn-secondary" onclick="history.back()">ยกเลิก</button>
+        </div>
 
-            <label>Start Date</label>
-            <input type="date" name="start_date" value="2026-01-01" required>
+    </form>
+</div>
 
-            <label>End Date</label>
-            <input type="date" name="end_date" value="2026-03-01" required>
-
-            <label>Status</label>
-            <select name="status" required>
-                <option value="In Progress" selected>In Progress</option>
-                <option value="Completed">Completed</option>
-                <option value="Pending">Pending</option>
-            </select>
-
-            <div class="form-buttons">
-                <button type="submit" class="btn-primary">อัปเดต</button>
-                <button type="button" class="btn-secondary" onclick="history.back()">ยกเลิก</button>
-            </div>
-
-        </form>
-    </div>
-    <script>
-        fetch("head.html")
-            .then(res => res.text())
-            .then(data => {
-                document.getElementById("layout-head").innerHTML = data.split("<nav")[0];
-                document.getElementById("layout-navbar").innerHTML = "<nav" + data.split("<nav")[1];
-            });
-    </script>
-
-</body>
-
-</html>
+<%- include('partials/footer') %>
