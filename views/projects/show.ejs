@@ -1,0 +1,13 @@
+<%- include('../partials/header') %>
+
+<h2>Project Detail</h2>
+
+<p><strong>Name:</strong> <%= project.project_name %></p>
+<p><strong>Owner:</strong> <%= project.User.name %></p>
+<p><strong>Status:</strong> <%= project.status %></p>
+<p><strong>Start:</strong> <%= project.start_date %></p>
+<p><strong>End:</strong> <%= project.end_date %></p>
+
+<a href="/projects">Back</a>
+
+<%- include('../partials/footer') %>

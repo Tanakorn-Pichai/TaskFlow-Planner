@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+
+<h2>Log Detail</h2>
+
+<p><strong>Task:</strong> <%= log.Task.title %></p>
+<p><strong>Action:</strong> <%= log.action %></p>
+<p><strong>Time Spent:</strong> <%= log.time_spent %> minutes</p>
+<p><strong>Date:</strong> <%= log.created_at %></p>
+
+<a href="/task-logs">Back</a>
+
+<%- include('../partials/footer') %>

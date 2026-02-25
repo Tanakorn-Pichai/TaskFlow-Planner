@@ -1,43 +1,29 @@
-// ===============================
-// เรียกใช้งาน Modules
-// ===============================
-const express = require('express');
-const path = require('path');
-// สร้าง express app
-const app = express();
+require('dotenv').config()
+const express = require('express')
+const path = require('path')
+const { sequelize } = require('./models')
 
+const app = express()
 
-// ===============================
-// ตั้งค่า View Engine
-// ===============================
+app.set('view engine', 'ejs')
+app.set('views', path.join(__dirname, 'views'))
 
-// กำหนดโฟลเดอร์ views
-app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static(path.join(__dirname, 'public')))
 
-// ใช้ EJS เป็น template engine
-app.set("view engine", "ejs");
+// Routes
+app.use('/users', require('./routes/usersRoutes'))
+app.use('/projects', require('./routes/projectsRoutes'))
+app.use('/tasks', require('./routes/tasksRoutes'))
+app.use('/task-logs', require('./routes/taskLogsRoutes'))
+app.use('/reports', require('./routes/reportRoutes'))
 
+app.get('/', (req, res) => {
+  res.render('home')
+})
 
-// ===============================
-// Static Files (CSS / JS)
-// ===============================
-app.use(express.static(path.join(__dirname, "public")));
-
-
-// ===============================
-// เรียกใช้ Routes
-// ===============================
-
-// import homeRoutes
-const homeRoutes = require("./routes/homeRoutes");
-
-// ใช้ route หน้าแรก
-app.use("/", homeRoutes);
-
-
-// ===============================
-// เปิด Server
-// ===============================
-app.listen(5500, () => {
-    console.log("Server started at http://localhost:5500");
-});
+sequelize.sync().then(() => {
+  app.listen(process.env.PORT, () => {
+    console.log(`Server running on port http://localhost:${process.env.PORT}`)
+  })
+})

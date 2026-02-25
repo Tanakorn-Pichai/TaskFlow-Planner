@@ -1,0 +1,12 @@
+<%- include('../partials/header') %>
+
+<h2>Edit User</h2>
+
+<form method="POST">
+Name: <input name="name" value="<%= user.name %>"><br>
+Email: <input name="email" value="<%= user.email %>"><br>
+Role: <input name="role" value="<%= user.role %>"><br>
+<button type="submit">Update</button>
+</form>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+
+<h2>Task Logs</h2>
+<a href="/task-logs/create">+ Create</a>
+
+<table border="1">
+<tr>
+<th>Task</th>
+<th>Action</th>
+<th>Time Spent</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+
+<% logs.forEach(l => { %>
+<tr>
+<td><%= l.Task ? l.Task.title : '' %></td>
+<td><%= l.action %></td>
+<td><%= l.time_spent %> min</td>
+<td><%= l.created_at %></td>
+<td>
+<a href="/task-logs/show/<%= l.log_id %>">Show</a>
+<a href="/task-logs/delete/<%= l.log_id %>">Delete</a>
+</td>
+</tr>
+<% }) %>
+
+</table>
+
+<%- include('../partials/footer') %>

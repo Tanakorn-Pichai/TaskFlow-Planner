@@ -1,0 +1,29 @@
+<%- include('../partials/header') %>
+
+<h2>Projects</h2>
+<a href="/projects/create">+ Create</a>
+
+<table border="1">
+<tr>
+<th>Name</th>
+<th>Owner</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+<% projects.forEach(p => { %>
+<tr>
+<td><%= p.project_name %></td>
+<td><%= p.User ? p.User.name : '' %></td>
+<td><%= p.status %></td>
+<td>
+<a href="/projects/show/<%= p.project_id %>">Show</a>
+<a href="/projects/edit/<%= p.project_id %>">Edit</a>
+<a href="/projects/delete/<%= p.project_id %>">Delete</a>
+</td>
+</tr>
+<% }) %>
+
+</table>
+
+<%- include('../partials/footer') %>

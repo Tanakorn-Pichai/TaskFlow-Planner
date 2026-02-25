@@ -1,38 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
+<%- include('partials/header') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css/style.css" />
-    <title>Book</title>
-</head>
+<h1>TaskFlow Planner Dashboard</h1>
 
-<body>
-    <h1>Books</h1>
-    <table>
-        <tr>
-            <th>Title</th>
-            <th>author</th>
-            <th>Actions</th>
-        </tr>
-       
-            <tr>
-                <td>
-                   
-                </td>
-                <td>
-                   
-                </td>
-                <td>
-                    <a href="">View</a>
-                    <a href="">Edit</a>
-                    <a href="">Delete</a>
-                </td>
-            </tr>
-       
-    </table>
-    <a href="/create">Create New Book</a>
-</body>
+<ul>
+  <li><a href="/users">Manage Users</a></li>
+  <li><a href="/projects">Manage Projects</a></li>
+  <li><a href="/tasks">Manage Tasks</a></li>
+  <li><a href="/reports/dashboard">Productivity Dashboard</a></li>
+  <li><a href="/reports/user-performance">User Performance Report</a></li>
+</ul>
 
-</html>
+<%- include('partials/footer') %>

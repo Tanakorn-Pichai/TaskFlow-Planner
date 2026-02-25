@@ -4,7 +4,9 @@
   "description": "Project Full Stack",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "seed": "node database/seed.js"
   },
   "repository": {
     "type": "git",

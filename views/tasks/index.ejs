@@ -1,0 +1,31 @@
+<%- include('../partials/header') %>
+
+<h2>Tasks</h2>
+<a href="/tasks/create">+ Create</a>
+
+<table border="1">
+<tr>
+<th>Title</th>
+<th>Project</th>
+<th>Status</th>
+<th>Priority</th>
+<th>Action</th>
+</tr>
+
+<% tasks.forEach(t => { %>
+<tr>
+<td><%= t.title %></td>
+<td><%= t.Project ? t.Project.project_name : '' %></td>
+<td><%= t.status %></td>
+<td><%= t.priority %></td>
+<td>
+<a href="/tasks/show/<%= t.task_id %>">Show</a>
+<a href="/tasks/edit/<%= t.task_id %>">Edit</a>
+<a href="/tasks/delete/<%= t.task_id %>">Delete</a>
+</td>
+</tr>
+<% }) %>
+
+</table>
+
+<%- include('../partials/footer') %>

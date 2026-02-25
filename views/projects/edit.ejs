@@ -1,0 +1,24 @@
+<%- include('../partials/header') %>
+
+<h2>Edit Project</h2>
+
+<form method="POST">
+Project Name: <input name="project_name" value="<%= project.project_name %>"><br>
+
+Owner:
+<select name="user_id">
+<% users.forEach(u => { %>
+<option value="<%= u.user_id %>" <%= u.user_id == project.user_id ? 'selected' : '' %>>
+<%= u.name %>
+</option>
+<% }) %>
+</select><br>
+
+Start Date: <input type="date" name="start_date" value="<%= project.start_date %>"><br>
+End Date: <input type="date" name="end_date" value="<%= project.end_date %>"><br>
+Status: <input name="status" value="<%= project.status %>"><br>
+
+<button type="submit">Update</button>
+</form>
+
+<%- include('../partials/footer') %>
