@@ -5,7 +5,12 @@
 <form method="POST">
 Name: <input name="name" value="<%= user.name %>"><br>
 Email: <input name="email" value="<%= user.email %>"><br>
-Role: <input name="role" value="<%= user.role %>"><br>
+Role:
+<select name="role">
+  <option value="user" <%= user.role === 'user' ? 'selected' : '' %>>User</option>
+  <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+</select>
+<br>
 <button type="submit">Update</button>
 </form>
 

@@ -14,7 +14,13 @@ Owner:
 
 Start Date: <input type="date" name="start_date"><br>
 End Date: <input type="date" name="end_date"><br>
-Status: <input name="status"><br>
+Status:
+<select name="status">
+  <option value="planning" selected>Planning</option>
+  <option value="active">Active</option>
+  <option value="completed">Completed</option>
+</select>
+<br>
 
 <button type="submit">Save</button>
 </form>

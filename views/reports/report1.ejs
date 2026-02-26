@@ -15,6 +15,7 @@
 <table class="dashboard-table">
   <thead>
     <tr>
+      <th>Period</th>
       <th>Total Tasks</th>
       <th>Completed Tasks</th>
       <th>Pending Tasks</th>
@@ -23,6 +24,13 @@
   </thead>
   <tbody>
     <tr>
+      <td>
+        <% if (start_date && end_date) { %>
+          <%= start_date %> - <%= end_date %>
+        <% } else { %>
+          All Time
+        <% } %>
+      </td>
       <td><%= total %></td>
       <td><%= completed %></td>
       <td><%= pending %></td>

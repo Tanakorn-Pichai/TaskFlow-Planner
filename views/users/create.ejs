@@ -5,7 +5,12 @@
 <form method="POST">
 Name: <input name="name"><br>
 Email: <input name="email"><br>
-Role: <input name="role"><br>
+Role:
+<select name="role">
+  <option value="user" selected>User</option>
+  <option value="admin">Admin</option>
+</select>
+<br>
 <button type="submit">Save</button>
 </form>
 

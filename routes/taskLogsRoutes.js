@@ -3,7 +3,8 @@ const controller = require('../controllers/taskLogsController')
 
 router.get('/', controller.index)
 router.get('/create', controller.createForm)
-router.post('/create', controller.create)
+router.post('/', controller.create)   
 router.get('/delete/:id', controller.delete)
 router.get('/show/:id', controller.show)
+
 module.exports = router

@@ -1,0 +1,38 @@
+<%- include('../partials/header') %>
+
+<h1>Create Task Log</h1>
+
+<div class="form-container">
+  <form action="/task-logs" method="POST">
+
+    <div class="form-group">
+      <label>Select Task</label>
+      <select name="task_id" required>
+        <option value="">-- Select Task --</option>
+        <% tasks.forEach(task => { %>
+          <option value="<%= task.task_id %>">
+            <%= task.title %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Action</label>
+      <select name="action" required>
+        <option value="create">Create Task Record</option>
+        <option value="update">Start Working (Update)</option>
+        <option value="done">Mark as Done</option>
+      </select>
+      <small class="hint">
+        * Time will be calculated automatically when marking as Done.
+      </small>
+    </div>
+
+    <button type="submit" class="btn-primary">Save Log</button>
+    <a href="/task-logs" class="btn-secondary">Cancel</a>
+
+  </form>
+</div>
+
+<%- include('../partials/footer') %>

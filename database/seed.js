@@ -87,16 +87,16 @@ async function seedDatabase() {
 
     // ---------------- USERS (10) ----------------
     const users = await User.bulkCreate([
-      { name: "Somchai Prasert", email: "somchai@email.com", role: "manager" },
-      { name: "Suda Wong", email: "suda@email.com", role: "developer" },
-      { name: "Anan Techakul", email: "anan@email.com", role: "developer" },
-      { name: "Kanya Sri", email: "kanya@email.com", role: "designer" },
-      { name: "Narin Dev", email: "narin@email.com", role: "developer" },
-      { name: "Pimchanok UI", email: "pim@email.com", role: "designer" },
-      { name: "Thanawat QA", email: "thanawat@email.com", role: "tester" },
-      { name: "Orn Project", email: "orn@email.com", role: "manager" },
-      { name: "Krit Backend", email: "krit@email.com", role: "developer" },
-      { name: "Mali Support", email: "mali@email.com", role: "support" }
+      { name: "Somchai Prasert", email: "somchai@email.com", role: "user" },
+      { name: "Suda Wong", email: "suda@email.com", role: "user" },
+      { name: "Anan Techakul", email: "anan@email.com", role: "user" },
+      { name: "Kanya Sri", email: "kanya@email.com", role: "user" },
+      { name: "Narin Dev", email: "narin@email.com", role: "user" },
+      { name: "Pimchanok UI", email: "pim@email.com", role: "user" },
+      { name: "Thanawat QA", email: "thanawat@email.com", role: "user" },
+      { name: "Orn Project", email: "orn@email.com", role: "user" },
+      { name: "Krit Backend", email: "krit@email.com", role: "user" },
+      { name: "Mali Support", email: "mali@email.com", role: "admin" }
     ]);
 
     // ---------------- PROJECTS (12) ----------------

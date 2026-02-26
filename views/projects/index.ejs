@@ -7,6 +7,8 @@
 <tr>
 <th>Name</th>
 <th>Owner</th>
+<th>Start date</th>
+<th>End date</th>
 <th>Status</th>
 <th>Action</th>
 </tr>
@@ -15,6 +17,8 @@
 <tr>
 <td><%= p.project_name %></td>
 <td><%= p.User ? p.User.name : '' %></td>
+<td> <%= new Date(p.start_date).toLocaleString('en-GB') %></td>
+<td><%= new Date(p.end_date).toLocaleString('en-GB') %></td>
 <td><%= p.status %></td>
 <td>
 <a href="/projects/show/<%= p.project_id %>">Show</a>
