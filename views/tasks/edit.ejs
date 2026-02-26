@@ -1,0 +1,93 @@
+<%- include('../partials/header') %>
+
+<h2>Edit Task</h2>
+
+<form method="POST" action="/tasks/edit/<%= task.task_id %>">
+
+Owner:
+<select id="ownerSelect">
+  <option value="">-- Select Owner --</option>
+  <% users.forEach(u => { %>
+    <option value="<%= u.user_id %>"
+      <%= task.Project && task.Project.user_id == u.user_id ? 'selected' : '' %>>
+      <%= u.name %>
+    </option>
+  <% }) %>
+</select>
+<br>
+
+Project:
+<select name="project_id" id="projectSelect" required>
+  <option value="">-- Select Project --</option>
+</select>
+<br>
+
+Title:
+<input name="title" value="<%= task.title %>" disabled><br>
+
+Description:
+<textarea name="description"><%= task.description %></textarea><br>
+
+Priority:
+<select name="priority">
+  <option value="low" <%= task.priority === 'low' ? 'selected' : '' %>>Low</option>
+  <option value="medium" <%= task.priority === 'medium' ? 'selected' : '' %>>Medium</option>
+  <option value="high" <%= task.priority === 'high' ? 'selected' : '' %>>High</option>
+</select>
+<br>
+
+Status:
+<select name="status">
+  <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Planning</option>
+  <option value="In progress" <%= task.status === 'In progress' ? 'selected' : '' %>>In Progress</option>
+  <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+</select>
+<br>
+
+Due Date:
+<input type="date" name="due_date"
+value="<%= task.due_date ? task.due_date.toISOString().split('T')[0] : '' %>">
+<br>
+
+<button type="submit">Update</button>
+<button type="button" onclick="history.back()">Cancel</button>
+
+</form>
+
+<script>
+const users = <%- JSON.stringify(users) %>;
+const selectedProjectId = <%= task.project_id %>;
+
+const ownerSelect = document.getElementById('ownerSelect');
+const projectSelect = document.getElementById('projectSelect');
+
+function loadProjects(userId) {
+  projectSelect.innerHTML = '<option value="">-- Select Project --</option>';
+
+  const user = users.find(u => u.user_id == userId);
+  if (!user || !user.Projects) return;
+
+  user.Projects.forEach(p => {
+    const option = document.createElement('option');
+    option.value = p.project_id;
+    option.textContent = p.project_name;
+
+    if (p.project_id == selectedProjectId) {
+      option.selected = true;
+    }
+
+    projectSelect.appendChild(option);
+  });
+}
+
+ownerSelect.addEventListener('change', function () {
+  loadProjects(this.value);
+});
+
+// โหลดค่าเดิมตอนเปิดหน้า
+if (ownerSelect.value) {
+  loadProjects(ownerSelect.value);
+}
+</script>
+
+<%- include('../partials/footer') %>

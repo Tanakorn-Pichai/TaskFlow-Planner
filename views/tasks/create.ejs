@@ -1,11 +1,74 @@
 <%- include('../partials/header') %>
-<h2>Create User</h2>
+
+<h2>Create Task</h2>
 
 <form method="POST">
-Name: <input name="name"><br>
-Email: <input name="email"><br>
-Role: <input name="role"><br>
+Owner:
+<select id="ownerSelect">
+  <option value="">-- Select Owner --</option>
+  <% users.forEach(u => { %>
+    <option value="<%= u.user_id %>">
+      <%= u.name %>
+    </option>
+  <% }) %>
+</select>
+<br>
+
+Project:
+<select name="project_id" id="projectSelect" required>
+  <option value="">-- Select Project --</option>
+</select>
+<br>
+
+
+Description:
+<textarea name="description"></textarea><br>
+
+Priority:
+<select name="priority">
+  <option value="low">Low</option>
+  <option value="medium" selected>Medium</option>
+  <option value="high">High</option>
+</select>
+<br>
+
+Status:
+<select name="status">
+  <option value="pending" selected>Planning</option>
+  <option value="In progress">In Progress</option>
+  <option value="completed">Completed</option>
+</select>
+<br>
+
+Due Date:
+<input type="date" name="due_date"><br>
+
 <button type="submit">Save</button>
+<button type="button" onclick="history.back()">Cancel</button>
+
 </form>
 
-<%- include('../partials/footer') %>
+<script>
+const users = <%- JSON.stringify(users) %>;
+
+const ownerSelect = document.getElementById('ownerSelect');
+const projectSelect = document.getElementById('projectSelect');
+
+ownerSelect.addEventListener('change', function () {
+  const userId = this.value;
+  projectSelect.innerHTML = '<option value="">-- Select Project --</option>';
+
+  if (!userId) return;
+
+  const user = users.find(u => u.user_id == userId);
+
+  if (!user || !user.Projects || user.Projects.length === 0) return;
+
+  user.Projects.forEach(p => {
+    const option = document.createElement('option');
+    option.value = p.project_id;
+    option.textContent = p.project_name;
+    projectSelect.appendChild(option);
+  });
+});
+</script>

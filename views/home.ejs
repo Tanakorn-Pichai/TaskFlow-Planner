@@ -2,5 +2,26 @@
 
 <h1>TaskFlow Planner Dashboard</h1>
 
+<ul>
+  <li>Total Users: <strong><%= totalUsers %></strong></li>
+  <li>Total Projects: <strong><%= totalProjects %></strong></li>
+  <li>Total Tasks: <strong><%= totalTasks %></strong></li>
+</ul>
+
+<h3>Task Status Summary</h3>
+
+<table border="1">
+  <tr>
+    <th>Status</th>
+    <th>Count</th>
+  </tr>
+
+  <% statusSummary.forEach(s => { %>
+    <tr>
+      <td><%= s.status %></td>
+      <td><%= s.get('count') %></td>
+    </tr>
+  <% }) %>
+</table>
 
 <%- include('partials/footer') %>

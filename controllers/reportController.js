@@ -1,47 +1,42 @@
 const { sequelize } = require("../models");
+const { Task, Project, User, TaskLog } = require('../models')
 
-exports.productivityDashboard = async (req, res) => {
-  try {
+exports.longestTasks = async (req, res) => {
 
-    const { start_date, end_date } = req.query;
+  const tasks = await Task.findAll({
+    include: [
+      {
+        model: Project,
+        include: [User]
+      },
+      {
+        model: TaskLog
+      }
+    ]
+  })
 
-    let condition = "";
-    if (start_date && end_date) {
-      condition = `
-        WHERE date(created_at) BETWEEN '${start_date}' AND '${end_date}'
-      `;
+  const result = tasks.map(task => {
+
+    let totalMinutes = 0
+    task.TaskLogs.forEach(log => {
+      totalMinutes += log.time_spent
+    })
+
+    return {
+      title: task.title,
+      project: task.Project.project_name,
+      owner: task.Project.User.name,
+      totalMinutes,
+      logCount: task.TaskLogs.length
     }
+  })
 
-    const [result] = await sequelize.query(`
-      SELECT 
-        COUNT(*) AS total_tasks,
-        SUM(CASE WHEN status = 'done' THEN 1 ELSE 0 END) AS completed_tasks,
-        SUM(CASE WHEN status != 'done' THEN 1 ELSE 0 END) AS pending_tasks
-      FROM tasks
-      ${condition}
-    `);
+  const longest = result
+    .sort((a, b) => b.totalMinutes - a.totalMinutes)
+    .slice(0, 5)
 
-    const data = result[0];
-
-    const completion_rate = data.total_tasks > 0
-      ? ((data.completed_tasks / data.total_tasks) * 100).toFixed(2)
-      : 0;
-
-    res.render("reports/report1", {
-      total: data.total_tasks,
-      completed: data.completed_tasks,
-      pending: data.pending_tasks,
-      rate: completion_rate,
-      start_date,
-      end_date
-    });
-
-  } catch (err) {
-    console.error(err);
-    res.send("Error generating dashboard");
-  }
-};
-
+  res.render('reports/report1', { longest })
+}
 
 // 🏆 Report 2: User Performance Report
 exports.userPerformanceReport = async (req, res) => {

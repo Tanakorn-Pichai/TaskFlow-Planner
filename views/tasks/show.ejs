@@ -8,6 +8,11 @@
 <p><strong>Status:</strong> <%= task.status %></p>
 <p><strong>Due:</strong> <%= task.due_date %></p>
 <p><strong>Project:</strong> <%= task.Project.project_name %></p>
+<p><strong>Owner:</strong>
+  <%= task.Project && task.Project.User
+      ? task.Project.User.name
+      : '' %>
+</p>
 
 <a href="/tasks">Back</a>
 

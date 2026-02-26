@@ -16,8 +16,14 @@
 <tr>
 <td><%= l.Task ? l.Task.title : '' %></td>
 <td><%= l.action %></td>
-<td><%= l.time_spent %> min</td>
-<td><%= l.created_at %></td>
+<td>
+  <% 
+    const hours = Math.floor(l.time_spent / 60);
+    const minutes = l.time_spent % 60;
+  %>
+  <%= hours > 0 ? hours + ' hr ' : '' %><%= minutes %> min
+</td>
+<td><%= new Date(l.created_at).toLocaleDateString('en-GB') %></td>
 <td>
 <a href="/task-logs/show/<%= l.log_id %>">Show</a>
 <a href="/task-logs/delete/<%= l.log_id %>">Delete</a>

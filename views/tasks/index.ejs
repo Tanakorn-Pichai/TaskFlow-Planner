@@ -7,6 +7,7 @@
 <tr>
 <th>Title</th>
 <th>Project</th>
+<th>Owner</th>
 <th>Status</th>
 <th>Priority</th>
 <th>Action</th>
@@ -16,6 +17,11 @@
 <tr>
 <td><%= t.title %></td>
 <td><%= t.Project ? t.Project.project_name : '' %></td>
+<td>
+  <%= t.Project && t.Project.User 
+      ? t.Project.User.name 
+      : '' %>
+</td>
 <td><%= t.status %></td>
 <td><%= t.priority %></td>
 <td>

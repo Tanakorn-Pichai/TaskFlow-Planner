@@ -1,42 +1,26 @@
 <%- include('../partials/header') %>
 
-<h1>📊 Productivity Dashboard</h1>
+<h2>⏱ Top 5 Longest Tasks</h2>
 
-<form method="GET" action="/reports/productivity" class="filter-form">
-  <label>From:</label>
-  <input type="date" name="start_date" value="<%= start_date || '' %>">
+<table border="1">
+<tr>
+  <th>Task</th>
+  <th>Project</th>
+  <th>Owner</th>
+  <th>Total Time (min)</th>
+  <th>Log Count</th>
+</tr>
 
-  <label>To:</label>
-  <input type="date" name="end_date" value="<%= end_date || '' %>">
+<% longest.forEach(t => { %>
+<tr>
+  <td><%= t.title %></td>
+  <td><%= t.project %></td>
+  <td><%= t.owner %></td>
+  <td><%= t.totalMinutes %></td>
+  <td><%= t.logCount %></td>
+</tr>
+<% }) %>
 
-  <button type="submit">Filter</button>
-</form>
-
-<table class="dashboard-table">
-  <thead>
-    <tr>
-      <th>Period</th>
-      <th>Total Tasks</th>
-      <th>Completed Tasks</th>
-      <th>Pending Tasks</th>
-      <th>Completion Rate (%)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <% if (start_date && end_date) { %>
-          <%= start_date %> - <%= end_date %>
-        <% } else { %>
-          All Time
-        <% } %>
-      </td>
-      <td><%= total %></td>
-      <td><%= completed %></td>
-      <td><%= pending %></td>
-      <td><%= rate %> %</td>
-    </tr>
-  </tbody>
 </table>
 
 <%- include('../partials/footer') %>

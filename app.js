@@ -2,6 +2,7 @@ require('dotenv').config()
 const express = require('express')
 const path = require('path')
 const { sequelize } = require('./models')
+const homeController = require('./controllers/homeController')
 
 const app = express()
 
@@ -18,9 +19,7 @@ app.use('/tasks', require('./routes/tasksRoutes'))
 app.use('/task-logs', require('./routes/taskLogsRoutes'))
 app.use('/reports', require('./routes/reportRoutes'))
 
-app.get('/', (req, res) => {
-  res.render('home')
-})
+app.get('/', homeController.dashboard)
 
 sequelize.sync().then(() => {
   app.listen(process.env.PORT, () => {
