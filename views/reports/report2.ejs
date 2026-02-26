@@ -7,6 +7,7 @@
     <tr>
       <th>Rank</th>
       <th>Name</th>
+      <th>Total Projects</th>  <!-- เพิ่ม -->
       <th>Total Tasks</th>
       <th>Completed</th>
       <th>Total Time (min)</th>
@@ -18,9 +19,10 @@
       <tr>
         <td><%= user.rank %></td>
         <td><%= user.name %></td>
-        <td><%= user.total_tasks %></td>
-        <td><%= user.completed_tasks %></td>
-        <td><%= user.total_time_spent %></td>
+        <td><%= user.total_projects || 0 %></td> <!-- เพิ่ม -->
+        <td><%= user.total_tasks || 0 %></td>
+        <td><%= user.completed_tasks || 0 %></td>
+        <td><%= user.total_time_spent || 0 %></td>
         <td><%= user.completion_rate || 0 %> %</td>
       </tr>
     <% }) %>
