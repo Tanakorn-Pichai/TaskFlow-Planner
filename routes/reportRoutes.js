@@ -1,7 +1,8 @@
-const router = require('express').Router()
-const controller = require('../controllers/reportController')
+const express = require("express");
+const router = express.Router();
+const reportController = require("../controllers/reportController");
 
-router.get('/dashboard', controller.productivityDashboard)
-router.get('/user-performance', controller.userPerformance)
+router.get("/productivity", reportController.productivityDashboard);
+router.get("/user-performance", reportController.userPerformanceReport);
 
-module.exports = router
+module.exports = router;

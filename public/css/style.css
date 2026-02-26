@@ -1,9 +1,215 @@
+/* =========================
+   TaskFlow Planner UI
+   Single CSS File
+========================= */
+
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body */
 body {
-  font-family: Arial;
-  margin: 40px;
+  font-family: 'Segoe UI', Tahoma, sans-serif;
+  background: #f4f6f9;
+  color: #333;
+  padding: 30px;
+}
+
+/* Headings */
+h1, h2, h3 {
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Navigation */
+nav {
+  background: #2c3e50;
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 25px;
 }
 
 nav a {
-  margin-right: 10px;
+  color: #fff;
   text-decoration: none;
+  margin-right: 20px;
+  font-weight: 500;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+/* Buttons */
+a, button {
+  transition: 0.3s;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  background: #3498db;
+  color: #fff;
+}
+
+button:hover {
+  background: #2980b9;
+}
+
+/* Links as Buttons */
+a[href*="create"] {
+  background: #27ae60;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white;
+}
+
+a[href*="create"]:hover {
+  background: #1e8449;
+}
+
+a[href*="delete"] {
+  color: #e74c3c;
+  margin-left: 8px;
+}
+
+a[href*="edit"] {
+  color: #f39c12;
+  margin-left: 8px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 15px;
+}
+
+table thead {
+  background: #34495e;
+  color: #fff;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+tr:nth-child(even) {
+  background: #f2f2f2;
+}
+
+tr:hover {
+  background: #eaf2f8;
+}
+
+/* Forms */
+form {
+  background: #fff;
+  padding: 25px;
+  border-radius: 10px;
+  max-width: 500px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+form input,
+form select,
+form textarea {
+  width: 100%;
+  padding: 8px;
+  margin: 8px 0 15px 0;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+form textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+/* Dashboard Stats */
+.stat-box {
+  display: inline-block;
+  background: #3498db;
+  color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  margin-right: 20px;
+  min-width: 180px;
+  text-align: center;
+}
+
+.stat-box h3 {
+  font-size: 28px;
+  margin-bottom: 5px;
+}
+
+/* Footer */
+footer {
+  margin-top: 40px;
+  text-align: center;
+  color: #888;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    padding: 15px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  nav {
+    text-align: center;
+  }
+
+  nav a {
+    display: block;
+    margin: 8px 0;
+  }
+
+  .stat-box {
+    display: block;
+    margin-bottom: 15px;
+  }
+  .filter-form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-form input {
+  padding: 6px;
+  margin: 0 5px;
+}
+
+.filter-form button {
+  padding: 6px 12px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.filter-form button:hover {
+  background-color: #2980b9;
+}
 }

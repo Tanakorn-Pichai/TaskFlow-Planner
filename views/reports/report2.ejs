@@ -1,11 +1,30 @@
 <%- include('../partials/header') %>
 
-<h2>User Performance Report</h2>
+<h1>🏆 User Performance Report</h1>
 
-<ul>
-<% users.forEach(user => { %>
-  <li><%= user.name %> - <%= user.role %></li>
-<% }) %>
-</ul>
+<table>
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Name</th>
+      <th>Total Tasks</th>
+      <th>Completed</th>
+      <th>Total Time (min)</th>
+      <th>Completion %</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% users.forEach(user => { %>
+      <tr>
+        <td><%= user.rank %></td>
+        <td><%= user.name %></td>
+        <td><%= user.total_tasks %></td>
+        <td><%= user.completed_tasks %></td>
+        <td><%= user.total_time_spent %></td>
+        <td><%= user.completion_rate || 0 %> %</td>
+      </tr>
+    <% }) %>
+  </tbody>
+</table>
 
 <%- include('../partials/footer') %>
