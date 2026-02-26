@@ -40,7 +40,7 @@ const Task = sequelize.define("tasks", {
   title: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT },
   priority: { type: DataTypes.ENUM("low", "medium", "high") },
-  status: { type: DataTypes.ENUM("todo", "doing", "done") },
+  status: { type: DataTypes.ENUM("Planning", "In progress", "Completed") },
   due_date: { type: DataTypes.DATE },
   created_at: { type: DataTypes.DATE, defaultValue: Sequelize.NOW }
 }, { timestamps: false });
@@ -124,7 +124,7 @@ async function seedDatabase() {
 
     // ---------------- TASKS (30) ----------------
     const priorities = ["low", "medium", "high"];
-    const statuses = ["todo", "doing", "done"];
+    const statuses = ["Planning", "In progress", "Completed"];
 
     const tasks = [];
 

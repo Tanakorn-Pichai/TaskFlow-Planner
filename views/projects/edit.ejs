@@ -14,11 +14,35 @@ Owner:
 <% }) %>
 </select><br>
 
-Start Date: <input type="date" name="start_date" value="<%= project.start_date %>"><br>
-End Date: <input type="date" name="end_date" value="<%= project.end_date %>"><br>
-Status: <input name="status" value="<%= project.status %>"><br>
+Start Date:
+<input type="date" name="start_date"
+value="<%= project.start_date 
+  ? new Date(project.start_date).toISOString().split('T')[0] 
+  : '' %>"><br>
+
+End Date:
+<input type="date" name="end_date"
+value="<%= project.end_date 
+  ? new Date(project.end_date).toISOString().split('T')[0] 
+  : '' %>"><br>
+Status:
+<select name="status">
+  <option value="planning" <%= project.status === 'planning' ? 'selected' : '' %>>
+    Planning
+  </option>
+
+  <option value="active" <%= project.status === 'active' ? 'selected' : '' %>>
+    Active
+  </option>
+
+  <option value="completed" <%= project.status === 'completed' ? 'selected' : '' %>>
+    Completed
+  </option>
+</select>
+<br>
 
 <button type="submit">Update</button>
+<button type="button" onclick="history.back()">Cancel</button>
 </form>
 
 <%- include('../partials/footer') %>

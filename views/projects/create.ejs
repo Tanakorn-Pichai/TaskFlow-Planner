@@ -1,5 +1,15 @@
 <%- include('../partials/header') %>
+<%
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
 
+  const format = (d) => {
+    const offset = d.getTimezoneOffset();
+    const local = new Date(d.getTime() - offset * 60000);
+    return local.toISOString().split('T')[0];
+  };
+%>
 <h2>Create Project</h2>
 
 <form method="POST">
@@ -12,8 +22,11 @@ Owner:
 <% }) %>
 </select><br>
 
-Start Date: <input type="date" name="start_date"><br>
-End Date: <input type="date" name="end_date"><br>
+Start Date:
+<input type="date" name="start_date" value="<%= format(today) %>"><br>
+
+End Date:
+<input type="date" name="end_date" value="<%= format(tomorrow) %>"><br>
 Status:
 <select name="status">
   <option value="planning" selected>Planning</option>
@@ -23,6 +36,7 @@ Status:
 <br>
 
 <button type="submit">Save</button>
+<button type="button" onclick="history.back()">Cancel</button>
 </form>
 
 <%- include('../partials/footer') %>
