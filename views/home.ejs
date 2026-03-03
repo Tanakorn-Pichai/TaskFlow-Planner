@@ -2,63 +2,133 @@
 
 <h1>TaskFlow Planner Dashboard</h1>
 
+<!-- ================= STAT CARDS ================= -->
 <div class="dashboard-grid">
 
   <% if (user.role === 'admin') { %>
-    <a href="/users" class="stat-card projects dashboard">
-  <h3>Total Users</h3>
-  <p><%= totalUsers %></p>
-</a>
+    <a href="/users" class="stat-card projectss">
+      <h3>Total Users</h3>
+      <p><%= totalUsers %></p>
+    </a>
   <% } %>
 
-<a href="/projects" class="stat-card projects">
-  <h3>Total Projects</h3>
-  <p><%= totalProjects %></p>
-</a>
+  <a href="/projects" class="stat-card projects">
+    <h3>Total Projects</h3>
+    <p><%= totalProjects %></p>
+  </a>
 
-<a href="/tasks" class="stat-card tasks">
-  <h3>Total Tasks</h3>
-  <p><%= totalTasks %></p>
-</a>
+  <a href="/tasks" class="stat-card tasks">
+    <h3>Total Tasks</h3>
+    <p><%= totalTasks %></p>
+  </a>
 
 </div>
+
+<!-- ================= CHARTS ================= -->
 <div class="chart-container">
+
   <div class="chart-card">
-  <h3>Task Completion Overview</h3>
-  <canvas id="taskChart"></canvas>
+    <h3>Task Completion Overview</h3>
+    <canvas id="taskChart"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <h3>Project Completion Overview</h3>
+    <canvas id="projectChart"></canvas>
+  </div>
+
 </div>
-<div class="chart-card">
-  <h3>Project Completion Overview</h3>
-  <canvas id="projectChart"></canvas>
+
+<!-- ================= RECENT LOGS ================= -->
+<div class="recent-card">
+
+  <div class="recent-header">
+    <h3>Recent Task Logs</h3>
+    <a href="/task-logs" class="view-all-link">View All →</a>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>Task</th>
+          <th>Project</th>
+          <th>Owner</th>
+          <th>Action</th>
+          <th>Time</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% logs.forEach((l, index) => { %>
+          <tr>
+
+            <td>
+              <% if (user.role === 'admin') { %>
+                <%= l.Task ? l.Task.title : '' %>
+              <% } else { %>
+                Task #<%= index + 1 %>
+              <% } %>
+            </td>
+
+            <td>
+              <%= l.Task && l.Task.Project
+                  ? l.Task.Project.project_name
+                  : '' %>
+            </td>
+
+            <td>
+              <%= l.Task && l.Task.Project && l.Task.Project.User
+                  ? l.Task.Project.User.name
+                  : '' %>
+            </td>
+
+            <td><%= l.action %></td>
+
+            <td>
+              <% 
+                const hours = Math.floor(l.time_spent / 60);
+                const minutes = l.time_spent % 60;
+              %>
+              <%= hours > 0 ? hours + ' hr ' : '' %><%= minutes %> min
+            </td>
+
+            <td>
+              <%= new Date(l.created_at).toLocaleDateString('en-GB') %>
+            </td>
+
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+
 </div>
-</div>
 
-
-
-
+<!-- ================= CHART.JS ================= -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-const ctx = document.getElementById('taskChart').getContext('2d');
+const taskCtx = document.getElementById('taskChart').getContext('2d');
 
-new Chart(ctx, {
+new Chart(taskCtx, {
     type: 'doughnut',
     data: {
         labels: ['Completed', 'Not Completed'],
         datasets: [{
             data: [<%= completedTasks %>, <%= pendingTasks %>],
-            backgroundColor: ['#2ecc71', '#e74c3c']
+            backgroundColor: ['#16a34a', '#ef4444']
         }]
     },
     options: {
         responsive: true,
         plugins: {
-            legend: {
-                position: 'bottom'
-            }
+            legend: { position: 'bottom' }
         }
     }
 });
+
 const projectCtx = document.getElementById('projectChart').getContext('2d');
 
 new Chart(projectCtx, {
@@ -67,21 +137,16 @@ new Chart(projectCtx, {
         labels: ['Completed Projects', 'Not Completed Projects'],
         datasets: [{
             data: [<%= completedProjects %>, <%= pendingProjects %>],
-            backgroundColor: ['#3498db', '#f39c12']
+            backgroundColor: ['#2563eb', '#f59e0b']
         }]
     },
     options: {
         responsive: true,
         plugins: {
-            legend: {
-                position: 'bottom'
-            }
+            legend: { position: 'bottom' }
         }
     }
 });
 </script>
-
-
-
 
 <%- include('partials/footer') %>

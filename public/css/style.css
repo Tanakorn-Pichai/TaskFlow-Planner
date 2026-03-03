@@ -538,7 +538,7 @@ body.dark-mode .toast.error {
 }
 
 /* สีใหม่ อ่านชัดกว่าเดิม */
-.stat-card.projects.dashboard {
+.stat-card.projectss {
   background: linear-gradient(135deg, #1d4ed8, #2563eb);
 }
 
@@ -1223,4 +1223,91 @@ body.dark-mode form button.btn-update {
 
 body.dark-mode form button.btn-update:hover {
   background: #facc15;
+}
+/* ================= REPORT BUTTONS ================= */
+
+#myReportBtn,
+#resetReportBtn {
+  background: #2563eb;        /* น้ำเงิน */
+  color: #ffffff;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.2s ease;
+  margin-right: 8px;
+}
+
+/* Hover */
+#myReportBtn:hover,
+#resetReportBtn:hover {
+  background: #1d4ed8;        /* น้ำเงินเข้ม */
+  transform: translateY(-2px);
+}
+
+/* Active (ตอนกด) */
+#myReportBtn:active,
+#resetReportBtn:active {
+  transform: scale(0.98);
+}
+
+body.dark-mode #myReportBtn,
+body.dark-mode #resetReportBtn {
+  background: #3b82f6;
+}
+
+body.dark-mode #myReportBtn:hover,
+body.dark-mode #resetReportBtn:hover {
+  background: #2563eb;
+}
+/* ================= RECENT LOG CARD ================= */
+
+.recent-card {
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+  margin-top: 30px;
+}
+
+body.dark-mode .recent-card {
+  background: #1e293b;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+}
+
+/* Header */
+.recent-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.view-all-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.view-all-link:hover {
+  text-decoration: underline;
+}
+
+/* Scrollable table */
+.table-wrapper {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+/* ทำ header sticky */
+.table-wrapper thead th {
+  position: sticky;
+  top: 0;
+  background: #2d96ff;
+}
+
+body.dark-mode .table-wrapper thead th {
+  background: #334155;
 }

@@ -1,4 +1,4 @@
-const { User, Project, Task, Sequelize } = require('../models')
+const { User, Project, Task, TaskLog, Sequelize } = require('../models')
 const { Op } = require('sequelize')
 
 exports.dashboard = async (req, res) => {
@@ -83,7 +83,38 @@ exports.dashboard = async (req, res) => {
       }
     })
   }
+  let logs
 
+if (user.role === 'admin') {
+  logs = await TaskLog.findAll({
+    include: [{
+      model: Task,
+      required: true,
+      include: [{
+        model: Project,
+        required: true,
+        include: [User]
+      }]
+    }],
+    order: [['created_at', 'DESC']],
+    limit: 5
+  })
+} else {
+  logs = await TaskLog.findAll({
+    include: [{
+      model: Task,
+      required: true,
+      include: [{
+        model: Project,
+        where: { user_id: user.user_id },
+        required: true,
+        include: [User]
+      }]
+    }],
+    order: [['created_at', 'DESC']],
+    limit: 5
+  })
+}
   res.render('home', {
     totalUsers,
     totalProjects,
@@ -92,6 +123,7 @@ exports.dashboard = async (req, res) => {
     pendingTasks,
     completedProjects,
     pendingProjects,
-    user
+    user,
+    logs
   })
 }
