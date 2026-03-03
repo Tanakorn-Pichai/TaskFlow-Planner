@@ -5,14 +5,20 @@
 <form method="POST">
 Project Name: <input name="project_name" value="<%= project.project_name %>"><br>
 
-Owner:
-<select name="user_id">
-<% users.forEach(u => { %>
-<option value="<%= u.user_id %>" <%= u.user_id == project.user_id ? 'selected' : '' %>>
-<%= u.name %>
-</option>
-<% }) %>
-</select><br>
+<% if (user.role === 'admin') { %>
+  Owner:
+  <select name="user_id">
+    <% users.forEach(u => { %>
+      <option value="<%= u.user_id %>"
+        <%= u.user_id == project.user_id ? 'selected' : '' %>>
+        <%= u.name %>
+      </option>
+    <% }) %>
+  </select><br>
+<% } else { %>
+  <p><strong>Owner:</strong> <%= user.name %></p>
+  <input type="hidden" name="user_id" value="<%= user.user_id %>">
+<% } %>
 
 Start Date:
 <input type="date" name="start_date"

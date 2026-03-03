@@ -4,7 +4,6 @@ const path = require('path')
 const session = require('express-session')
 const { sequelize } = require('./models')
 const homeController = require('./controllers/homeController')
-
 const app = express()
 
 

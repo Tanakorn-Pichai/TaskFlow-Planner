@@ -1,7 +1,7 @@
 <%- include('../partials/header') %>
 
 <h2>Task Logs</h2>
-<a href="/task-logs/create">+ Create</a>
+
 
 <table border="1">
 <tr>
@@ -26,7 +26,6 @@
 <td><%= new Date(l.created_at).toLocaleDateString('en-GB') %></td>
 <td>
 <a href="/task-logs/show/<%= l.log_id %>">Show</a>
-<a href="/task-logs/delete/<%= l.log_id %>">Delete</a>
 </td>
 </tr>
 <% }) %>
