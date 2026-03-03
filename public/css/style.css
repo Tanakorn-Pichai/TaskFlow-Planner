@@ -30,6 +30,9 @@ nav {
   padding: 15px;
   border-radius: 8px;
   margin-bottom: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 nav a {
@@ -168,6 +171,8 @@ footer {
   color: #888;
 }
 
+
+
 /* Responsive */
 @media (max-width: 768px) {
   body {
@@ -212,4 +217,47 @@ footer {
 .filter-form button:hover {
   background-color: #2980b9;
 }
+
+}/* =========================
+   User Info (Navbar)
+========================= */
+
+.user-info {
+  color: #ffffff;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.role-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+/* Admin badge */
+.role-badge.admin {
+  background: #e74c3c;
+  color: white;
+}
+
+/* User badge */
+.role-badge.user {
+  background: #27ae60;
+  color: white;
+}
+
+/* Logout Button */
+.logout-btn {
+  background: #f39c12;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white !important;
+  margin-left: 15px;
+  text-decoration: none;
+}
+
+.logout-btn:hover {
+  background: #d68910;
 }
