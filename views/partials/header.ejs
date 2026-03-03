@@ -7,7 +7,9 @@
 <body>
 <nav>
   <a href="/">Home</a> |
-  <a href="/users">Manage Users</a>
+    <% if (user && user.role === 'admin') { %>
+    <a href="/users">Manage Users</a>
+  <% } %>
   <a href="/projects">Manage Projects</a>
   <a href="/tasks">Manage Tasks</a>
   <a href="/task-logs">Tasks Log</a>

@@ -2,26 +2,83 @@
 
 <h1>TaskFlow Planner Dashboard</h1>
 
-<ul>
-  <li>Total Users: <strong><%= totalUsers %></strong></li>
-  <li>Total Projects: <strong><%= totalProjects %></strong></li>
-  <li>Total Tasks: <strong><%= totalTasks %></strong></li>
-</ul>
+<div class="dashboard-grid">
 
-<h3>Task Status Summary</h3>
+  <% if (user.role === 'admin') { %>
+    <div class="stat-card users">
+      <h3>Total Users</h3>
+      <p><%= totalUsers %></p>
+    </div>
+  <% } %>
 
-<table border="1">
-  <tr>
-    <th>Status</th>
-    <th>Count</th>
-  </tr>
+  <div class="stat-card projects">
+    <h3>Total Projects</h3>
+    <p><%= totalProjects %></p>
+  </div>
 
-  <% statusSummary.forEach(s => { %>
-    <tr>
-      <td><%= s.status %></td>
-      <td><%= s.get('count') %></td>
-    </tr>
-  <% }) %>
-</table>
+  <div class="stat-card tasks">
+    <h3>Total Tasks</h3>
+    <p><%= totalTasks %></p>
+  </div>
+
+</div>
+<div class="chart-container">
+  <div class="chart-card">
+  <h3>Task Completion Overview</h3>
+  <canvas id="taskChart"></canvas>
+</div>
+<div class="chart-card">
+  <h3>Project Completion Overview</h3>
+  <canvas id="projectChart"></canvas>
+</div>
+</div>
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const ctx = document.getElementById('taskChart').getContext('2d');
+
+new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Completed', 'Not Completed'],
+        datasets: [{
+            data: [<%= completedTasks %>, <%= pendingTasks %>],
+            backgroundColor: ['#2ecc71', '#e74c3c']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+const projectCtx = document.getElementById('projectChart').getContext('2d');
+
+new Chart(projectCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Completed Projects', 'Not Completed Projects'],
+        datasets: [{
+            data: [<%= completedProjects %>, <%= pendingProjects %>],
+            backgroundColor: ['#3498db', '#f39c12']
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
+    }
+});
+</script>
 
 <%- include('partials/footer') %>

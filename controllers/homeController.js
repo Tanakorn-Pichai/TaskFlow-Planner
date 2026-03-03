@@ -1,69 +1,97 @@
-console.log("HOME CONTROLLER VERSION 2")
-const { User, Project, Task } = require('../models')
-const { Sequelize } = require('sequelize')
-exports.dashboard = async (req, res) => {
+const { User, Project, Task, Sequelize } = require('../models')
+const { Op } = require('sequelize')
 
+exports.dashboard = async (req, res) => {
   const user = req.session.user
 
-  // ===== ADMIN =====
+  let totalUsers = 0
+  let totalProjects = 0
+  let totalTasks = 0
+  let completedTasks = 0
+  let pendingTasks = 0
+  let completedProjects = 0
+  let pendingProjects = 0
+
   if (user.role === 'admin') {
 
-    const totalUsers = await User.count()
-    const totalProjects = await Project.count()
-    const totalTasks = await Task.count()
+    totalUsers = await User.count()
+    totalProjects = await Project.count()
+    totalTasks = await Task.count()
 
-    const statusSummary = await Task.findAll({
-      attributes: [
-        'status',
-        [Sequelize.fn('COUNT', Sequelize.col('status')), 'count']
-      ],
-      group: ['status']
+    // ===== TASK =====
+    completedTasks = await Task.count({
+      where: { status: 'Completed' }
     })
 
-    return res.render('home', {
-      totalUsers,
-      totalProjects,
-      totalTasks,
-      statusSummary,
-      role: user.role   // ✅ สำคัญมาก
+    pendingTasks = await Task.count({
+      where: { status: { [Op.ne]: 'Completed' } }
     })
-  }
 
-  // ===== USER =====
-  else {
+    // ===== PROJECT =====
+    completedProjects = await Project.count({
+      where: { status: 'completed' }
+    })
 
-    const totalProjects = await Project.count({
+    pendingProjects = await Project.count({
+      where: { status: { [Op.ne]: 'completed' } }
+    })
+
+  } else {
+
+    totalProjects = await Project.count({
       where: { user_id: user.user_id }
     })
 
-const totalTasks = await Task.count({
-  include: [{
-    model: Project,
-    where: { user_id: user.user_id },
-    required: true
-  }]
-})
+    totalTasks = await Task.count({
+      include: {
+        model: Project,
+        where: { user_id: user.user_id },
+        required: true
+      }
+    })
 
-const statusSummary = await Task.findAll({
-  attributes: [
-    'status',
-    [Sequelize.fn('COUNT', Sequelize.col('Task.status')), 'count']
-  ],
-  include: [{
-    model: Project,
-    attributes: [], // 🔥 บอกว่าไม่ต้องดึง column ของ Project
-    where: { user_id: user.user_id },
-    required: true
-  }],
-  group: ['Task.status']
-})
+    completedTasks = await Task.count({
+      where: { status: 'Completed' },
+      include: {
+        model: Project,
+        where: { user_id: user.user_id },
+        required: true
+      }
+    })
 
-    return res.render('home', {
-      totalUsers: null,
-      totalProjects,
-      totalTasks,
-      statusSummary,
-      role: user.role   // ✅ สำคัญมาก
+    pendingTasks = await Task.count({
+      where: { status: { [Op.ne]: 'Completed' } },
+      include: {
+        model: Project,
+        where: { user_id: user.user_id },
+        required: true
+      }
+    })
+
+    // ===== PROJECT (เฉพาะของ user) =====
+    completedProjects = await Project.count({
+      where: {
+        user_id: user.user_id,
+        status: 'completed'
+      }
+    })
+
+    pendingProjects = await Project.count({
+      where: {
+        user_id: user.user_id,
+        status: { [Op.ne]: 'completed' }
+      }
     })
   }
+
+  res.render('home', {
+    totalUsers,
+    totalProjects,
+    totalTasks,
+    completedTasks,
+    pendingTasks,
+    completedProjects,
+    pendingProjects,
+    user
+  })
 }
