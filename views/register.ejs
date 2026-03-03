@@ -3,14 +3,19 @@
 <div class="auth-container">
 
   <div class="auth-card">
-    <h2>Login</h2>
+    <h2>Register</h2>
 
     <% if (typeof error !== 'undefined') { %>
       <p class="auth-error"><%= error %></p>
     <% } %>
 
-    <form method="POST" action="/login" class="auth-form">
-      
+    <form method="POST" action="/register" class="auth-form">
+
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" required>
+      </div>
+
       <div class="form-group">
         <label>Email</label>
         <input type="email" name="email" required>
@@ -21,13 +26,13 @@
         <input type="password" name="password" required>
       </div>
 
-      <button type="submit" class="btn-primary">Login</button>
+      <button type="submit" class="btn-primary">Register</button>
 
     </form>
 
     <p class="auth-switch">
-      Don't have an account?
-      <a href="/register">Register here</a>
+      Already have an account?
+      <a href="/login">Login here</a>
     </p>
 
   </div>

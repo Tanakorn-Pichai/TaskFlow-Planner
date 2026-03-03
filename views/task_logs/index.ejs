@@ -8,9 +8,11 @@
 <thead>
 <tr>
 <th data-column="0">Task</th>
-<th data-column="1">Action</th>
-<th data-column="2">Time Spent (min)</th>
-<th data-column="3">Date</th>
+<th data-column="1">Project</th>
+<th data-column="2">Owner</th>
+<th data-column="3">Action</th>
+<th data-column="4">Time Spent (min)</th>
+<th data-column="5">Date</th>
 <th>Action</th>
 </tr>
 </thead>
@@ -19,13 +21,24 @@
 <% logs.forEach((l, index) => { %>
 <tr>
 
-<td
-  data-value="<%= l.Task ? l.Task.title : '' %>">
+<td>
   <% if (user.role === 'admin') { %>
     <%= l.Task ? l.Task.title : '' %>
   <% } else { %>
     Task #<%= index + 1 %>
   <% } %>
+</td>
+
+<td>
+  <%= l.Task && l.Task.Project 
+      ? l.Task.Project.project_name 
+      : '' %>
+</td>
+
+<td>
+  <%= l.Task && l.Task.Project && l.Task.Project.User
+      ? l.Task.Project.User.name
+      : '' %>
 </td>
 
 <td><%= l.action %></td>

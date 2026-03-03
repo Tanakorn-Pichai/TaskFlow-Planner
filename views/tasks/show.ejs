@@ -2,18 +2,65 @@
 
 <h2>Task Detail</h2>
 
-<p><strong>Title:</strong> <%= task.title %></p>
-<p><strong>Description:</strong> <%= task.description %></p>
-<p><strong>Priority:</strong> <%= task.priority %></p>
-<p><strong>Status:</strong> <%= task.status %></p>
-<p><strong>Due:</strong> <%= task.due_date %></p>
-<p><strong>Project:</strong> <%= task.Project.project_name %></p>
-<p><strong>Owner:</strong>
-  <%= task.Project && task.Project.User
-      ? task.Project.User.name
-      : '' %>
-</p>
+<div class="stat-card users" style="max-width:700px;">
+  <div class="detail-header">
+    <h3><%= task.title %></h3>
+    <p></p>
+  </div>
 
-<a href="/tasks">Back</a>
+  <table>
+    <tbody>
+      <tr>
+        <th>description</th>
+        <td><%= task.description || '-' %></td>
+      </tr>
+
+      <tr>
+        <th>Priority</th>
+        <td><%= task.priority %></td>
+      </tr>
+
+      <tr>
+        <th>Status</th>
+        <td><%= task.status %></td>
+      </tr>
+
+      <tr>
+        <th>Due Date</th>
+        <td>
+          <%= task.due_date ? new Date(task.due_date).toLocaleString() : '-' %>
+        </td>
+      </tr>
+
+      <tr>
+        <th>Project</th>
+        <td><%= task.Project ? task.Project.project_name : '-' %></td>
+      </tr>
+
+      <tr>
+        <th>Owner</th>
+        <td>
+          <%= task.Project && task.Project.User ? task.Project.User.name : '-'
+          %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="action-buttons">
+   
+<a href="/tasks/edit/<%= task.task_id %>">
+  <button type="button">✏️ Edit</button>
+</a>
+    <a
+      href="/tasks/delete/<%= task.task_id %>"
+      onclick="return confirm('Delete this user?');"
+    >
+      <button type="submit" style="background: #e74c3c">🗑 Delete</button>
+    </a>
+
+    <button type="button" onclick="history.back()"style="background:#7f8c8d;">⬅ Back</button>
+  </div>
+</div>
 
 <%- include('../partials/footer') %>

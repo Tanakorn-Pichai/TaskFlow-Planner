@@ -2,12 +2,51 @@
 
 <h2>Project Detail</h2>
 
-<p><strong>Name:</strong> <%= project.project_name %></p>
-<p><strong>Owner:</strong> <%= project.User.name %></p>
-<p><strong>Status:</strong> <%= project.status %></p>
-<p><strong>Start:</strong> <%= project.start_date %></p>
-<p><strong>End:</strong> <%= project.end_date %></p>
+<div class="stat-card users">
+<h3><%= project.project_name %></h3>
+  <table class="project-detail-table">
+    <tbody>
+      <tr>
+        <th>Owner</th>
+        <td><%= project.User.name %></td>
+      </tr>
 
-<a href="/projects">Back</a>
+      <tr>
+        <th>Status</th>
+        <td><%= project.status %></td>
+      </tr>
+
+      <tr>
+        <th>Start</th>
+        <td><%= new Date(project.start_date).toLocaleDateString() %></td>
+      </tr>
+
+      <tr>
+        <th>End</th>
+        <td><%= new Date(project.end_date).toLocaleDateString() %></td>
+      </tr>
+
+    </tbody>
+  </table>
+  <!-- Action Buttons -->
+  <div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap;">
+
+<!-- Edit -->
+<a href="/projects/edit/ <%= project.project_id %>">
+  <button type="button">✏️ Edit</button>
+</a>
+
+<a href="/projects/delete/ <%= project.project_id %>">
+<button type="submit" style="background:#e74c3c;">🗑 Delete</button>
+</a>
+
+
+    <button type="button" onclick="history.back()"style="background:#7f8c8d;">⬅ Back</button>
+
+
+  </div>
+
+
+</div>
 
 <%- include('../partials/footer') %>

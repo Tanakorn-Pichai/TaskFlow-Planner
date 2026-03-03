@@ -1,4 +1,5 @@
-const { TaskLog, Task, Project } = require('../models')
+const { TaskLog, Task, Project, User } = require('../models')
+
 
 exports.index = async (req, res) => {
   const user = req.session.user
@@ -8,9 +9,12 @@ exports.index = async (req, res) => {
 
     logs = await TaskLog.findAll({
       include: {
-        model: Task,
-        include: Project
-      },
+      model: Task,
+      include: {
+        model: Project,
+        include: User
+      }
+    },
       order: [['created_at', 'DESC']]
     })
 
@@ -36,7 +40,19 @@ exports.index = async (req, res) => {
 
 exports.show = async (req, res) => {
   const log = await TaskLog.findByPk(req.params.id, {
-    include: Task
+    include: {
+      model: Task,
+      include: {
+        model: Project,
+        include: User
+      }
+    }
   })
+
+  if (!log) {
+    req.flash('error', 'Log not found')
+    return res.redirect('/task-logs')
+  }
+
   res.render('task_logs/show', { log })
 }

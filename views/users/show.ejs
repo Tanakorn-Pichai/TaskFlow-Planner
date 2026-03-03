@@ -2,11 +2,63 @@
 
 <h2>User Detail</h2>
 
-<p><strong>Name:</strong> <%= user.name %></p>
-<p><strong>Email:</strong> <%= user.email %></p>
-<p><strong>Role:</strong> <%= user.role %></p>
-<p><strong>Created:</strong> <%= user.created_at %></p>
+<div class="stat-card users" style="max-width:700px;">
 
-<a href="/users">Back</a>
+  <div style="margin-bottom:20px;">
+   
+  <h3><%= user.name %></h3>
+  </div>
+
+  <table>
+    <tbody>
+    
+<tr>
+        <th>Email</th>
+        <td>
+          <%= user.email %>
+        </td>
+      </tr>
+      <tr>
+        <th style="width:180px;">Role</th>
+        <td>
+          <% if (user.role === 'admin') { %>
+            <span class="role-badge admin">Admin</span>
+          <% } else { %>
+            <span class="role-badge user">User</span>
+          <% } %>
+        </td>
+      </tr>
+
+      <tr>
+        <th>Created At</th>
+        <td>
+          <%= new Date(user.created_at).toLocaleString() %>
+        </td>
+      </tr>
+
+  
+
+    </tbody>
+  </table>
+
+  <!-- Action Buttons -->
+  <div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap;">
+
+<!-- Edit -->
+<a href="/users/edit/ <%= user.user_id %>">
+  <button type="button">✏️ Edit</button>
+</a>
+
+<a href="/users/delete/ <%= user.user_id %>">
+<button type="submit" style="background:#e74c3c;">🗑 Delete</button>
+</a>
+
+
+    <button type="button" onclick="history.back()"style="background:#7f8c8d;">⬅ Back</button>
+
+
+  </div>
+
+</div>
 
 <%- include('../partials/footer') %>

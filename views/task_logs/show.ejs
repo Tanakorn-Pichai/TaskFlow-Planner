@@ -2,11 +2,47 @@
 
 <h2>Log Detail</h2>
 
-<p><strong>Task:</strong> <%= log.Task.title %></p>
-<p><strong>Action:</strong> <%= log.action %></p>
-<p><strong>Time Spent:</strong> <%= log.time_spent %> minutes</p>
-<p><strong>Date:</strong> <%= log.created_at %></p>
+<div class="stat-card users">
+<h3><%= log.Task.title %></h3>
+  <table class="log-detail-table">
+    <tbody>
 
-<a href="/task-logs">Back</a>
+      
+
+      <tr>
+        <th>Project</th>
+        <td><%= log.Task.Project.project_name %></td>
+      </tr>
+
+      <tr>
+        <th>Owner</th>
+        <td><%= log.Task.Project.User.name %></td>
+      </tr>
+
+      <tr>
+        <th>Action</th>
+        <td><%= log.action %></td>
+      </tr>
+
+      <tr>
+        <th>Time Spent</th>
+        <td><%= log.time_spent %> minutes</td>
+      </tr>
+
+      <tr>
+        <th>Date</th>
+        <td><%= new Date(log.created_at).toLocaleString() %></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <div class="log-actions">
+    <a href="/task-logs">
+      <button type="button" class="btn-back">⬅ Back</button>
+    </a>
+  </div>
+
+</div>
 
 <%- include('../partials/footer') %>

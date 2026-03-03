@@ -5,10 +5,10 @@
 <div class="dashboard-grid">
 
   <% if (user.role === 'admin') { %>
-    <div class="stat-card users">
-      <h3>Total Users</h3>
-      <p><%= totalUsers %></p>
-    </div>
+    <a href="/users" class="stat-card users">
+  <h3>Total Users</h3>
+  <p><%= totalUsers %></p>
+</a>
   <% } %>
 
 <a href="/projects" class="stat-card projects">
