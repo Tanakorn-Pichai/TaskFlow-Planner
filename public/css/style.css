@@ -1311,3 +1311,65 @@ body.dark-mode .recent-card {
 body.dark-mode .table-wrapper thead th {
   background: #334155;
 }
+
+/* ปุ่ม print ปกติ */
+.btn-print {
+  background: #2563eb;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-print:hover {
+  background: #1d4ed8;
+}
+
+/* =========================
+   PRINT MODE
+========================= */
+@media print {
+
+  /* ซ่อนปุ่ม / navbar / ปุ่มต่าง ๆ */
+  button,
+  .no-print,
+  nav,
+  .sidebar {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th, td {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: left;
+  }
+
+  th {
+    background: #eee;
+  }
+
+  h1, h2, h3 {
+    color: black;
+  }
+
+}
+.print-header {
+  display: none;
+}
+
+@media print {
+  .print-header {
+    display: block;
+  }
+}

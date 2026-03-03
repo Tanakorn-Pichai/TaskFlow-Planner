@@ -1,12 +1,18 @@
 <%- include('../partials/header') %>
 
 <h1>🏆 User Performance Report</h1>
+<div class="print-header">
+  
+  <p>Date: <%= new Date().toLocaleDateString('en-GB') %></p>
+  <hr>
+</div>
 
 <div style="margin-bottom:10px;">
+  
   <button id="myReportBtn">🔎 My Performance</button>
   <button id="resetReportBtn">🔄 Reset</button>
 </div>
-
+<button onclick="window.print()" class="btn-print">🖨 Print Report</button>
 <input type="text" class="table-search" placeholder="Search...">
 
 <table class="styled-table data-table">

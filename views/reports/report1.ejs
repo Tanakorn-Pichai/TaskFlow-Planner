@@ -1,10 +1,16 @@
 <%- include('../partials/header') %>
-
-<h2>⏱ Top 5 Longest Tasks</h2>
-
+  <h2>⏱ Top 5 Longest Tasks</h2>
+<div class="print-header">
+  
+  <p>Date: <%= new Date().toLocaleDateString('en-GB') %></p>
+  <hr>
+</div>
+<button onclick="window.print()" class="btn-print">🖨 Print Report</button>
 <input type="text" class="table-search" placeholder="Search...">
 
 <table class="styled-table data-table">
+  
+
 <thead>
 <tr>
   <th data-column="0">Task</th>
