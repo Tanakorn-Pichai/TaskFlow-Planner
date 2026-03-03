@@ -3,31 +3,50 @@
 <h2>Projects</h2>
 <a href="/projects/create">+ Create</a>
 
-<table border="1">
+<input type="text" class="table-search" placeholder="Search...">
+
+<table class="styled-table data-table">
+<thead>
 <tr>
-<th>Project Name</th>
-<th>Owner</th>
-<th>Start date</th>
-<th>End date</th>
-<th>Status</th>
+<th data-column="0">Project Name</th>
+<th data-column="1">Owner</th>
+<th data-column="2">Start Date</th>
+<th data-column="3">End Date</th>
+<th data-column="4">Status</th>
 <th>Action</th>
 </tr>
+</thead>
 
+<tbody>
 <% projects.forEach(p => { %>
 <tr>
 <td><%= p.project_name %></td>
+
 <td><%= p.User ? p.User.name : '' %></td>
-<td><%= new Date(p.start_date).toLocaleDateString('en-GB') %></td>
-<td><%= new Date(p.end_date).toLocaleDateString('en-GB') %></td>
+
+<td data-value="<%= p.start_date %>">
+  <%= new Date(p.start_date).toLocaleDateString('en-GB') %>
+</td>
+
+<td data-value="<%= p.end_date %>">
+  <%= new Date(p.end_date).toLocaleDateString('en-GB') %>
+</td>
+
 <td><%= p.status %></td>
+
 <td>
 <a href="/projects/show/<%= p.project_id %>">Show</a>
 <a href="/projects/edit/<%= p.project_id %>">Edit</a>
-<a href="/projects/delete/<%= p.project_id %>">Delete</a>
+<a href="/projects/delete/<%= p.project_id %>" 
+   onclick="return confirm('Delete this project?')">
+   Delete
+</a>
 </td>
 </tr>
 <% }) %>
-
+</tbody>
 </table>
+
+<script src="/js/table.js"></script>
 
 <%- include('../partials/footer') %>

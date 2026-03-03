@@ -5,7 +5,6 @@ const { User } = require('../models')
 // แสดงหน้า Login
 // =============================
 exports.loginForm = (req, res) => {
-  // ถ้า login แล้ว ไม่ต้องเข้า login อีก
   if (req.session.user) {
     return res.redirect('/')
   }
@@ -23,13 +22,15 @@ exports.login = async (req, res) => {
     const user = await User.findOne({ where: { email } })
 
     if (!user) {
-      return res.render('login', { error: 'Email ไม่ถูกต้อง' })
+      req.flash('error', 'Email ไม่ถูกต้อง')
+      return res.redirect('/login')
     }
 
     const match = await bcrypt.compare(password, user.password)
 
     if (!match) {
-      return res.render('login', { error: 'Password ไม่ถูกต้อง' })
+      req.flash('error', 'Password ไม่ถูกต้อง')
+      return res.redirect('/login')
     }
 
     // เก็บ session
@@ -40,11 +41,13 @@ exports.login = async (req, res) => {
       role: user.role
     }
 
+    req.flash('success', 'Login สำเร็จ 🎉')
     res.redirect('/')
 
   } catch (err) {
     console.error(err)
-    res.send('Login Error')
+    req.flash('error', 'เกิดข้อผิดพลาดในการเข้าสู่ระบบ')
+    res.redirect('/login')
   }
 }
 

@@ -2,25 +2,32 @@
 
 <h2>⏱ Top 5 Longest Tasks</h2>
 
-<table border="1">
-<tr>
-  <th>Task</th>
-  <th>Project</th>
-  <th>Owner</th>
-  <th>Total Time (min)</th>
-  <th>Log Count</th>
-</tr>
+<input type="text" class="table-search" placeholder="Search...">
 
+<table class="styled-table data-table">
+<thead>
+<tr>
+  <th data-column="0">Task</th>
+  <th data-column="1">Project</th>
+  <th data-column="2">Owner</th>
+  <th data-column="3">Total Time (min)</th>
+  <th data-column="4">Log Count</th>
+</tr>
+</thead>
+
+<tbody>
 <% longest.forEach(t => { %>
 <tr>
   <td><%= t.title %></td>
   <td><%= t.project %></td>
-  <td><%= t.owner %></td>
-  <td><%= t.totalMinutes %></td>
-  <td><%= t.logCount %></td>
+  <td data-value="<%= t.owner %>"><%= t.owner %></td>
+  <td data-value="<%= t.totalMinutes %>"><%= t.totalMinutes %></td>
+  <td data-value="<%= t.logCount %>"><%= t.logCount %></td>
 </tr>
 <% }) %>
-
+</tbody>
 </table>
+
+<script src="/js/table.js"></script>
 
 <%- include('../partials/footer') %>

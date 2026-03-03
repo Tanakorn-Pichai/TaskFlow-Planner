@@ -2,19 +2,25 @@
 
 <h2>Task Logs</h2>
 
-<table border="1">
+<input type="text" class="table-search" placeholder="Search...">
+
+<table class="styled-table data-table">
+<thead>
 <tr>
-<th>Task</th>
-<th>Action</th>
-<th>Time Spent</th>
-<th>Date</th>
+<th data-column="0">Task</th>
+<th data-column="1">Action</th>
+<th data-column="2">Time Spent (min)</th>
+<th data-column="3">Date</th>
 <th>Action</th>
 </tr>
+</thead>
 
+<tbody>
 <% logs.forEach((l, index) => { %>
 <tr>
 
-<td>
+<td
+  data-value="<%= l.Task ? l.Task.title : '' %>">
   <% if (user.role === 'admin') { %>
     <%= l.Task ? l.Task.title : '' %>
   <% } else { %>
@@ -24,7 +30,7 @@
 
 <td><%= l.action %></td>
 
-<td>
+<td data-value="<%= l.time_spent %>">
   <% 
     const hours = Math.floor(l.time_spent / 60);
     const minutes = l.time_spent % 60;
@@ -32,7 +38,9 @@
   <%= hours > 0 ? hours + ' hr ' : '' %><%= minutes %> min
 </td>
 
-<td><%= new Date(l.created_at).toLocaleDateString('en-GB') %></td>
+<td data-value="<%= l.created_at %>">
+  <%= new Date(l.created_at).toLocaleDateString('en-GB') %>
+</td>
 
 <td>
   <a href="/task-logs/show/<%= l.log_id %>">Show</a>
@@ -40,7 +48,9 @@
 
 </tr>
 <% }) %>
-
+</tbody>
 </table>
+
+<script src="/js/table.js"></script>
 
 <%- include('../partials/footer') %>

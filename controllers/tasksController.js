@@ -1,36 +1,39 @@
 const { Task, Project, User, TaskLog } = require('../models')
+
 /* =========================
    INDEX
 ========================= */
 exports.index = async (req, res) => {
-  const user = req.session.user
-  let tasks
+  try {
+    const user = req.session.user
+    let tasks
 
-  if (user.role === 'admin') {
+    if (user.role === 'admin') {
+      tasks = await Task.findAll({
+        include: [{
+          model: Project,
+          include: [User]
+        }]
+      })
+    } else {
+      tasks = await Task.findAll({
+        include: [{
+          model: Project,
+          where: { user_id: user.user_id },
+          include: [User],
+          required: true
+        }]
+      })
+    }
 
-    tasks = await Task.findAll({
-      include: [{
-        model: Project,
-        include: [User]
-      }]
-    })
+    res.render('tasks/index', { tasks })
 
-  } else {
-
-    tasks = await Task.findAll({
-      include: [{
-        model: Project,
-        where: { user_id: user.user_id },
-        include: [User],
-        required: true
-      }]
-    })
-
+  } catch (err) {
+    console.error(err)
+    req.flash('error', 'Failed to load tasks')
+    res.redirect('/')
   }
-
-  res.render('tasks/index', { tasks })
 }
-
 
 /* =========================
    CREATE FORM
@@ -40,18 +43,12 @@ exports.createForm = async (req, res) => {
   let users
 
   if (user.role === 'admin') {
-
-    users = await User.findAll({
-      include: [Project]
-    })
-
+    users = await User.findAll({ include: [Project] })
   } else {
-
     users = await User.findAll({
       where: { user_id: user.user_id },
       include: [Project]
     })
-
   }
 
   res.render('tasks/create', { users })
@@ -65,14 +62,14 @@ exports.create = async (req, res) => {
     const user = req.session.user
 
     const project = await Project.findByPk(req.body.project_id)
+    if (!project) {
+      req.flash('error', 'Project not found')
+      return res.redirect('/tasks')
+    }
 
-    if (!project) return res.status(404).send('Project not found')
-
-    if (
-      user.role !== 'admin' &&
-      project.user_id !== user.user_id
-    ) {
-      return res.status(403).send('Access Denied')
+    if (user.role !== 'admin' && project.user_id !== user.user_id) {
+      req.flash('error', 'Access Denied')
+      return res.redirect('/tasks')
     }
 
     const lastTask = await Task.findOne({
@@ -86,27 +83,26 @@ exports.create = async (req, res) => {
       title: `Task #${nextNumber}`
     })
 
-    // 🔥 CREATE LOG
     await TaskLog.create({
       task_id: newTask.task_id,
       action: 'CREATE',
       description: `Task created by ${user.name}`
     })
 
+    req.flash('success', 'Task created successfully 🎉')
     res.redirect('/tasks')
 
-  } catch (error) {
-    console.error(error)
-    res.send(error.message)
+  } catch (err) {
+    console.error(err)
+    req.flash('error', 'Failed to create task')
+    res.redirect('/tasks')
   }
 }
-
 
 /* =========================
    EDIT FORM
 ========================= */
 exports.editForm = async (req, res) => {
-
   const task = await Task.findByPk(req.params.id, {
     include: {
       model: Project,
@@ -114,14 +110,17 @@ exports.editForm = async (req, res) => {
     }
   })
 
-  if (!task) return res.send("Task not found")
+  if (!task) {
+    req.flash('error', 'Task not found')
+    return res.redirect('/tasks')
+  }
 
-  // 🔐 check owner
   if (
     req.session.user.role !== 'admin' &&
     task.Project.user_id !== req.session.user.user_id
   ) {
-    return res.status(403).send('Access Denied')
+    req.flash('error', 'Access Denied')
+    return res.redirect('/tasks')
   }
 
   const users = await User.findAll({ include: Project })
@@ -129,75 +128,88 @@ exports.editForm = async (req, res) => {
   res.render('tasks/edit', { task, users })
 }
 
-
 /* =========================
    UPDATE
 ========================= */
 exports.update = async (req, res) => {
+  try {
+    const user = req.session.user
 
-  const user = req.session.user
+    const task = await Task.findByPk(req.params.id, {
+      include: Project
+    })
 
-  const task = await Task.findByPk(req.params.id, {
-    include: Project
-  })
+    if (!task) {
+      req.flash('error', 'Task not found')
+      return res.redirect('/tasks')
+    }
 
-  if (
-    user.role !== 'admin' &&
-    task.Project.user_id !== user.user_id
-  ) {
-    return res.status(403).send('Access Denied')
+    if (user.role !== 'admin' && task.Project.user_id !== user.user_id) {
+      req.flash('error', 'Access Denied')
+      return res.redirect('/tasks')
+    }
+
+    await task.update(req.body)
+
+    await TaskLog.create({
+      task_id: task.task_id,
+      action: 'UPDATE',
+      description: `Task updated by ${user.name}`
+    })
+
+    req.flash('success', 'Task updated successfully ✅')
+    res.redirect('/tasks')
+
+  } catch (err) {
+    console.error(err)
+    req.flash('error', 'Failed to update task')
+    res.redirect('/tasks')
   }
-
-  await Task.update(req.body, {
-    where: { task_id: req.params.id }
-  })
-
-  // 🔥 CREATE LOG
-  await TaskLog.create({
-    task_id: task.task_id,
-    action: 'UPDATE',
-    description: `Task updated by ${user.name}`
-  })
-
-  res.redirect('/tasks')
 }
 
 /* =========================
    DELETE
 ========================= */
 exports.delete = async (req, res) => {
+  try {
+    const user = req.session.user
 
-  const user = req.session.user
+    const task = await Task.findByPk(req.params.id, {
+      include: Project
+    })
 
-  const task = await Task.findByPk(req.params.id, {
-    include: Project
-  })
+    if (!task) {
+      req.flash('error', 'Task not found')
+      return res.redirect('/tasks')
+    }
 
-  if (
-    user.role !== 'admin' &&
-    task.Project.user_id !== user.user_id
-  ) {
-    return res.status(403).send('Access Denied')
+    if (user.role !== 'admin' && task.Project.user_id !== user.user_id) {
+      req.flash('error', 'Access Denied')
+      return res.redirect('/tasks')
+    }
+
+    await TaskLog.create({
+      task_id: task.task_id,
+      action: 'DELETE',
+      description: `Task deleted by ${user.name}`
+    })
+
+    await task.destroy()
+
+    req.flash('success', 'Task deleted successfully 🗑️')
+    res.redirect('/tasks')
+
+  } catch (err) {
+    console.error(err)
+    req.flash('error', 'Failed to delete task')
+    res.redirect('/tasks')
   }
-
-  // 🔥 CREATE LOG ก่อนลบ
-  await TaskLog.create({
-    task_id: task.task_id,
-    action: 'DELETE',
-    description: `Task deleted by ${user.name}`
-  })
-
-  await Task.destroy({
-    where: { task_id: req.params.id }
-  })
-
-  res.redirect('/tasks')
 }
+
 /* =========================
    SHOW
 ========================= */
 exports.show = async (req, res) => {
-
   const task = await Task.findByPk(req.params.id, {
     include: [{
       model: Project,
@@ -205,11 +217,17 @@ exports.show = async (req, res) => {
     }]
   })
 
+  if (!task) {
+    req.flash('error', 'Task not found')
+    return res.redirect('/tasks')
+  }
+
   if (
     req.session.user.role !== 'admin' &&
     task.Project.user_id !== req.session.user.user_id
   ) {
-    return res.status(403).send('Access Denied')
+    req.flash('error', 'Access Denied')
+    return res.redirect('/tasks')
   }
 
   res.render('tasks/show', { task })

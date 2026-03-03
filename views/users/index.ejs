@@ -1,29 +1,42 @@
 <%- include('../partials/header') %>
 
 <h2>Users</h2>
+
 <a href="/users/create">+ Create</a>
 
-<table border="1">
+<input type="text" class="table-search" placeholder="Search...">
+
+<table class="styled-table data-table">
+<thead>
 <tr>
-<th>Name</th>
-<th>Email</th>
-<th>Role</th>
+<th data-column="0">Name</th>
+<th data-column="1">Email</th>
+<th data-column="2">Role</th>
+<th data-column="3">Created At</th>
 <th>Action</th>
 </tr>
+</thead>
 
-<% users.forEach(u => { %>
+<tbody>
+<% users.forEach((u) => { %>
 <tr>
 <td><%= u.name %></td>
 <td><%= u.email %></td>
 <td><%= u.role %></td>
+<td><%= new Date(u.created_at).toLocaleDateString() %></td>
 <td>
 <a href="/users/show/<%= u.user_id %>">Show</a>
 <a href="/users/edit/<%= u.user_id %>">Edit</a>
-<a href="/users/delete/<%= u.user_id %>">Delete</a>
+<a href="/users/delete/<%= u.user_id %>" 
+   onclick="return confirm('Delete this user?')">
+Delete
+</a>
 </td>
 </tr>
 <% }) %>
-
+</tbody>
 </table>
+
+<script src="/js/table.js"></script>
 
 <%- include('../partials/footer') %>

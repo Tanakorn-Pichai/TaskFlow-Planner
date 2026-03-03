@@ -3,16 +3,22 @@
 <h2>Tasks</h2>
 <a href="/tasks/create">+ Create</a>
 
-<table border="1">
+<!-- Search -->
+<input type="text" class="table-search" placeholder="Search...">
+
+<table class="styled-table data-table">
+<thead>
 <tr>
-<th>Title</th>
-<th>Project</th>
-<th>Owner</th>
-<th>Status</th>
-<th>Priority</th>
+<th data-column="0">Title</th>
+<th data-column="1">Project</th>
+<th data-column="2">Owner</th>
+<th data-column="3">Status</th>
+<th data-column="4">Priority</th>
 <th>Action</th>
 </tr>
+</thead>
 
+<tbody>
 <% tasks.forEach((t, index) => { %>
 <tr>
 
@@ -44,15 +50,19 @@
   ) { %>
 
     <a href="/tasks/edit/<%= t.task_id %>">Edit</a>
-    <a href="/tasks/delete/<%= t.task_id %>">Delete</a>
+    <a href="/tasks/delete/<%= t.task_id %>" 
+       onclick="return confirm('Delete this task?')">
+       Delete
+    </a>
 
   <% } %>
-
 </td>
 
 </tr>
 <% }) %>
-
+</tbody>
 </table>
+
+<script src="/js/table.js"></script>
 
 <%- include('../partials/footer') %>

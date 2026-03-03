@@ -2,31 +2,47 @@
 
 <h1>🏆 User Performance Report</h1>
 
-<table>
+<div style="margin-bottom:10px;">
+  <button id="myReportBtn">🔎 My Performance</button>
+  <button id="resetReportBtn">🔄 Reset</button>
+</div>
+
+<input type="text" class="table-search" placeholder="Search...">
+
+<table class="styled-table data-table">
   <thead>
     <tr>
-      <th>Rank</th>
-      <th>Name</th>
-      <th>Total Projects</th>  <!-- เพิ่ม -->
-      <th>Total Tasks</th>
-      <th>Completed</th>
-      <th>Total Time (min)</th>
-      <th>Completion %</th>
+      <th data-column="0">Rank</th>
+      <th data-column="1">Name</th>
+      <th data-column="2">Total Projects</th>
+      <th data-column="3">Total Tasks</th>
+      <th data-column="4">Completed</th>
+      <th data-column="5">Total Time (min)</th>
+      <th data-column="6">Completion %</th>
     </tr>
   </thead>
   <tbody>
-    <% users.forEach(user => { %>
-      <tr>
-        <td><%= user.rank %></td>
-        <td><%= user.name %></td>
-        <td><%= user.total_projects || 0 %></td> <!-- เพิ่ม -->
-        <td><%= user.total_tasks || 0 %></td>
-        <td><%= user.completed_tasks || 0 %></td>
-        <td><%= user.total_time_spent || 0 %></td>
-        <td><%= user.completion_rate || 0 %> %</td>
+    <% users.forEach(u => { %>
+      <tr data-user-id="<%= u.user_id %>">
+        <td data-value="<%= u.rank %>"><%= u.rank %></td>
+        <td><%= u.name %></td>
+        <td data-value="<%= u.total_projects || 0 %>"><%= u.total_projects || 0 %></td>
+        <td data-value="<%= u.total_tasks || 0 %>"><%= u.total_tasks || 0 %></td>
+        <td data-value="<%= u.completed_tasks || 0 %>"><%= u.completed_tasks || 0 %></td>
+        <td data-value="<%= u.total_time_spent || 0 %>"><%= u.total_time_spent || 0 %></td>
+        <td data-value="<%= u.completion_rate || 0 %>">
+          <%= u.completion_rate || 0 %> %
+        </td>
       </tr>
     <% }) %>
   </tbody>
 </table>
+
+<script>
+  const currentUserId = <%= user.user_id %>;
+</script>
+
+<script src="/js/table.js"></script>
+<script src="/js/user-report-filter.js"></script>
 
 <%- include('../partials/footer') %>

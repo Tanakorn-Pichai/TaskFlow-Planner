@@ -5,24 +5,47 @@
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-<nav>
-  <a href="/">Home</a> |
-    <% if (user && user.role === 'admin') { %>
-    <a href="/users">Manage Users</a>
-  <% } %>
-  <a href="/projects">Manage Projects</a>
-  <a href="/tasks">Manage Tasks</a>
-  <a href="/task-logs">Tasks Log</a>
-  <a href="/reports/longestTasks">Report 1</a>
-  <a href="/reports/user-performance">Report 2</a>
-<% if (user) { %>
-  <span class="user-info">
-    👤 <%= user.name %>
-    <span class="role-badge <%= user.role %>">
-      <%= user.role %>
-    </span>
-  </span>
-  <a href="/logout" class="logout-btn">Logout</a>
+
+<nav class="navbar">
+<% if (success.length > 0) { %>
+  <div class="toast success show">
+    <span><%= success[0] %></span>
+    <button class="close-btn">&times;</button>
+  </div>
 <% } %>
+
+<% if (error.length > 0) { %>
+  <div class="toast error show">
+    <span><%= error[0] %></span>
+    <button class="close-btn">&times;</button>
+  </div>
+<% } %>
+  <div class="nav-left">
+    <a href="/" class="logo">TaskFlow</a>
+
+    <% if (user && user.role === 'admin') { %>
+      <a href="/users">Users</a>
+    <% } %>
+
+    <a href="/projects">Projects</a>
+    <a href="/tasks">Tasks</a>
+    <a href="/task-logs">Logs</a>
+    <a href="/reports/longestTasks">Report 1</a>
+    <a href="/reports/user-performance">Report 2</a>
+  </div>
+
+  <% if (user) { %>
+  <div class="nav-right">
+    <div class="user-info">
+      👤 <%= user.name %>
+      <span class="role-badge <%= user.role %>">
+        <%= user.role %>
+      </span>
+    </div>
+    <a href="/logout" class="logout-btn">Logout</a>
+  </div>
+  <% } %>
+
 </nav>
-<hr>
+
+<div class="content">

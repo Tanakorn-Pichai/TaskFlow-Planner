@@ -1,16 +1,16 @@
-/* =========================
-   TaskFlow Planner UI
+/* ==================================================
+   TaskFlow Planner - Modern UI (Clean Version)
    Single CSS File
-========================= */
+================================================== */
 
-/* Reset */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Body */
+/* ================= BODY ================= */
 body {
   font-family: 'Segoe UI', Tahoma, sans-serif;
   background: #f4f6f9;
@@ -18,38 +18,108 @@ body {
   padding: 30px;
 }
 
-/* Headings */
+/* ================= HEADINGS ================= */
 h1, h2, h3 {
   margin-bottom: 20px;
   color: #2c3e50;
 }
 
-/* Navigation */
+h1 {
+  font-weight: 600;
+  margin-bottom: 30px;
+}
+
+/* ==================================================
+   NAVBAR MODERN
+================================================== */
+
 nav {
-  background: #2c3e50;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 25px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  background: linear-gradient(90deg, #1f2937, #2c3e50);
+  padding: 14px 25px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+}
+
+nav .nav-left,
+nav .nav-right {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
 }
 
 nav a {
-  color: #fff;
+  color: #ffffff;
   text-decoration: none;
-  margin-right: 20px;
   font-weight: 500;
-}
-
-nav a:hover {
-  text-decoration: underline;
-}
-
-/* Buttons */
-a, button {
+  position: relative;
+  padding: 6px 0;
   transition: 0.3s;
 }
+
+/* Hover underline animation */
+nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0%;
+  height: 2px;
+  background: #3498db;
+  transition: 0.3s ease;
+}
+
+nav a:hover::after {
+  width: 100%;
+}
+
+/* ================= USER INFO ================= */
+
+.user-info {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.role-badge {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  margin-left: 6px;
+  font-weight: bold;
+}
+
+.role-badge.admin {
+  background: #e74c3c;
+  color: white;
+}
+
+.role-badge.user {
+  background: #27ae60;
+  color: white;
+}
+
+.logout-btn {
+  background: #f39c12;
+  padding: 6px 12px;
+  border-radius: 6px;
+  color: white !important;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+  background: #d68910;
+}
+
+/* ==================================================
+   BUTTONS & LINKS
+================================================== */
 
 button {
   padding: 8px 14px;
@@ -58,13 +128,13 @@ button {
   cursor: pointer;
   background: #3498db;
   color: #fff;
+  transition: 0.3s;
 }
 
 button:hover {
   background: #2980b9;
 }
 
-/* Links as Buttons */
 a[href*="create"] {
   background: #27ae60;
   padding: 6px 12px;
@@ -76,17 +146,20 @@ a[href*="create"]:hover {
   background: #1e8449;
 }
 
-a[href*="delete"] {
-  color: #e74c3c;
-  margin-left: 8px;
-}
-
 a[href*="edit"] {
   color: #f39c12;
   margin-left: 8px;
 }
 
-/* Tables */
+a[href*="delete"] {
+  color: #e74c3c;
+  margin-left: 8px;
+}
+
+/* ==================================================
+   TABLE
+================================================== */
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -96,7 +169,7 @@ table {
   margin-top: 15px;
 }
 
-table thead {
+thead {
   background: #34495e;
   color: #fff;
 }
@@ -114,7 +187,48 @@ tr:hover {
   background: #eaf2f8;
 }
 
-/* Forms */
+/* Sort Arrow */
+th[data-column] {
+  cursor: pointer;
+}
+
+th.asc::after {
+  content: " ▲";
+}
+
+th.desc::after {
+  content: " ▼";
+}
+
+/* ==================================================
+   SEARCH / FILTER
+================================================== */
+
+.table-search {
+  padding: 8px;
+  margin-bottom: 15px;
+  width: 250px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.filter-form {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.filter-form input,
+select {
+  padding: 6px;
+  margin: 0 5px 10px 5px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+/* ==================================================
+   FORMS
+================================================== */
+
 form {
   background: #fff;
   padding: 25px;
@@ -138,133 +252,9 @@ form textarea {
   min-height: 80px;
 }
 
-/* Cards */
-.card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-}
-
-/* Dashboard Stats */
-.stat-box {
-  display: inline-block;
-  background: #3498db;
-  color: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  margin-right: 20px;
-  min-width: 180px;
-  text-align: center;
-}
-
-.stat-box h3 {
-  font-size: 28px;
-  margin-bottom: 5px;
-}
-
-/* Footer */
-footer {
-  margin-top: 40px;
-  text-align: center;
-  color: #888;
-}
-
-
-
-/* Responsive */
-@media (max-width: 768px) {
-  body {
-    padding: 15px;
-  }
-
-  table {
-    font-size: 14px;
-  }
-
-  nav {
-    text-align: center;
-  }
-
-  nav a {
-    display: block;
-    margin: 8px 0;
-  }
-
-  .stat-box {
-    display: block;
-    margin-bottom: 15px;
-  }
-  .filter-form {
-  text-align: center;
-  margin-bottom: 20px;
-}
-
-.filter-form input {
-  padding: 6px;
-  margin: 0 5px;
-}
-
-.filter-form button {
-  padding: 6px 12px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-.filter-form button:hover {
-  background-color: #2980b9;
-}
-
-}/* =========================
-   User Info (Navbar)
-========================= */
-
-.user-info {
-  color: #ffffff;
-  font-weight: 600;
-  margin-left: 20px;
-}
-
-.role-badge {
-  padding: 3px 8px;
-  border-radius: 12px;
-  font-size: 12px;
-  margin-left: 6px;
-  font-weight: bold;
-}
-
-/* Admin badge */
-.role-badge.admin {
-  background: #e74c3c;
-  color: white;
-}
-
-/* User badge */
-.role-badge.user {
-  background: #27ae60;
-  color: white;
-}
-
-/* Logout Button */
-.logout-btn {
-  background: #f39c12;
-  padding: 6px 12px;
-  border-radius: 6px;
-  color: white !important;
-  margin-left: 15px;
-  text-decoration: none;
-}
-
-.logout-btn:hover {
-  background: #d68910;
-}
-
-/* =========================
-   Dashboard Layout Modern
-========================= */
+/* ==================================================
+   DASHBOARD GRID
+================================================== */
 
 .dashboard-grid {
   display: grid;
@@ -273,19 +263,24 @@ footer {
   margin-bottom: 30px;
 }
 
-/* Stat Card */
+/* ================= STAT CARD ================= */
+
 .stat-card {
+  display: block;              /* ใช้กับ <a> ได้ */
+  text-decoration: none;
+  color: inherit;
+
   background: #ffffff;
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.05);
   transition: 0.3s ease;
-  position: relative;
   overflow: hidden;
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-6px);
+  box-shadow: 0 12px 25px rgba(0,0,0,0.08);
 }
 
 .stat-card h3 {
@@ -299,7 +294,7 @@ footer {
   font-weight: bold;
 }
 
-/* Different colors */
+/* Left border colors */
 .stat-card.users {
   border-left: 6px solid #9b59b6;
 }
@@ -312,29 +307,134 @@ footer {
   border-left: 6px solid #2ecc71;
 }
 
-/* Chart Card */
+/* ==================================================
+   CHART
+================================================== */
+
+.chart-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+}
+
 .chart-card {
   background: #ffffff;
   padding: 30px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(0,0,0,0.05);
-  max-width: 500px;
-  margin: auto;
   text-align: center;
 }
 
-.chart-card canvas {
-  max-width: 350px;
-  margin: 0 auto;
+/* ==================================================
+   PAGINATION
+================================================== */
+
+.pagination {
+  margin-top: 15px;
 }
 
-/* Dashboard Heading */
-h1 {
-  margin-bottom: 30px;
-  font-weight: 600;
+.pagination button {
+  margin: 0 3px;
+  padding: 5px 10px;
+  border: none;
+  background: #3498db;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
 }
-.chart-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 25px;
+
+.pagination button.active {
+  background: #2c3e50;
+}
+
+.pagination button:hover {
+  background: #2980b9;
+}
+
+/* ==================================================
+   FOOTER
+================================================== */
+
+footer {
+  margin-top: 40px;
+  text-align: center;
+  color: #888;
+}
+
+/* ==================================================
+   RESPONSIVE
+================================================== */
+
+@media (max-width: 768px) {
+
+  body {
+    padding: 15px;
+  }
+
+  nav {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  nav .nav-left,
+  nav .nav-right {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ================= TOAST NOTIFICATION ================= */
+
+.toast {
+  position: fixed;
+  top: 25px;
+  right: 25px;
+  min-width: 280px;
+  padding: 16px 20px;
+  border-radius: 10px;
+  color: white;
+  font-weight: 500;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  transform: translateX(120%);
+  opacity: 0;
+  transition: 0.4s ease;
+  z-index: 9999;
+}
+
+.toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast.success {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+}
+
+.toast.error {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.toast .close-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.toast .close-btn:hover {
+  opacity: 0.7;
 }

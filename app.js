@@ -5,7 +5,9 @@ const session = require('express-session')
 const { sequelize } = require('./models')
 const homeController = require('./controllers/homeController')
 const app = express()
+const flash = require('connect-flash');
 
+app.use(flash());
 
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, 'views'))
@@ -22,6 +24,8 @@ app.use(session({
 
 
 app.use((req, res, next) => {
+  res.locals.success = req.flash('success')
+  res.locals.error = req.flash('error')
   res.locals.user = req.session.user
   next()
 })
