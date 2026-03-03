@@ -7,6 +7,7 @@
 <body>
 
 <nav class="navbar">
+
 <% if (success.length > 0) { %>
   <div class="toast success show">
     <span><%= success[0] %></span>
@@ -20,6 +21,7 @@
     <button class="close-btn">&times;</button>
   </div>
 <% } %>
+
   <div class="nav-left">
     <a href="/" class="logo">TaskFlow</a>
 
@@ -34,14 +36,17 @@
     <a href="/reports/user-performance">Report 2</a>
   </div>
 
-  <% if (user) { %>
+ 
   <div class="nav-right">
+    <button id="themeToggle" class="theme-toggle">🌙</button>
+ <% if (user) { %>
     <div class="user-info">
       👤 <%= user.name %>
       <span class="role-badge <%= user.role %>">
         <%= user.role %>
       </span>
     </div>
+
     <a href="/logout" class="logout-btn">Logout</a>
   </div>
   <% } %>

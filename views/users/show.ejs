@@ -45,16 +45,16 @@
   <div style="margin-top:25px; display:flex; gap:10px; flex-wrap:wrap;">
 
 <!-- Edit -->
-<a href="/users/edit/ <%= user.user_id %>">
-  <button type="button">✏️ Edit</button>
+<a href="/users/edit/<%= user.user_id %>">
+  <button type="button" class="primary">✏️ Edit</button>
 </a>
 
-<a href="/users/delete/ <%= user.user_id %>">
-<button type="submit" style="background:#e74c3c;">🗑 Delete</button>
+<a href="/users/delete/<%= user.user_id %>">
+  <button type="button" class="danger">🗑 Delete</button>
 </a>
 
 
-    <button type="button" onclick="history.back()"style="background:#7f8c8d;">⬅ Back</button>
+    <button type="button" onclick="history.back()" class="secondary">⬅ Back</button>
 
 
   </div>

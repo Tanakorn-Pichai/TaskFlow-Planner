@@ -5,7 +5,7 @@
 <div class="dashboard-grid">
 
   <% if (user.role === 'admin') { %>
-    <a href="/users" class="stat-card users">
+    <a href="/users" class="stat-card projects dashboard">
   <h3>Total Users</h3>
   <p><%= totalUsers %></p>
 </a>
@@ -80,5 +80,8 @@ new Chart(projectCtx, {
     }
 });
 </script>
+
+
+
 
 <%- include('partials/footer') %>
