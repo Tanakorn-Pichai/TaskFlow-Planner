@@ -4,17 +4,29 @@
 
 <form method="POST" action="/tasks/edit/<%= task.task_id %>">
 
-Owner:
-<select id="ownerSelect">
-  <option value="">-- Select Owner --</option>
-  <% users.forEach(u => { %>
-    <option value="<%= u.user_id %>"
-      <%= task.Project && task.Project.user_id == u.user_id ? 'selected' : '' %>>
-      <%= u.name %>
-    </option>
-  <% }) %>
-</select>
-<br>
+<% if (user.role === 'admin') { %>
+
+  <!-- ===== ADMIN ===== -->
+  Owner:
+  <select id="ownerSelect">
+    <option value="">-- Select Owner --</option>
+    <% users.forEach(u => { %>
+      <option value="<%= u.user_id %>"
+        <%= task.Project && task.Project.user_id == u.user_id ? 'selected' : '' %>>
+        <%= u.name %>
+      </option>
+    <% }) %>
+  </select>
+  <br>
+
+<% } else { %>
+
+  <!-- ===== USER ===== -->
+  <p><strong>Owner:</strong> <%= user.name %></p>
+  <input type="hidden" id="ownerSelect" value="<%= user.user_id %>">
+
+<% } %>
+
 
 Project:
 <select name="project_id" id="projectSelect" required>
@@ -38,9 +50,9 @@ Priority:
 
 Status:
 <select name="status">
-  <option value="pending" <%= task.status === 'pending' ? 'selected' : '' %>>Planning</option>
+  <option value="Planning" <%= task.status === 'Planning' ? 'selected' : '' %>>Planning</option>
   <option value="In progress" <%= task.status === 'In progress' ? 'selected' : '' %>>In Progress</option>
-  <option value="completed" <%= task.status === 'completed' ? 'selected' : '' %>>Completed</option>
+  <option value="Completed" <%= task.status === 'Completed' ? 'selected' : '' %>>Completed</option>
 </select>
 <br>
 
@@ -80,13 +92,14 @@ function loadProjects(userId) {
   });
 }
 
-ownerSelect.addEventListener('change', function () {
-  loadProjects(this.value);
-});
+if (ownerSelect) {
+  ownerSelect.addEventListener('change', function () {
+    loadProjects(this.value);
+  });
 
-// โหลดค่าเดิมตอนเปิดหน้า
-if (ownerSelect.value) {
-  loadProjects(ownerSelect.value);
+  if (ownerSelect.value) {
+    loadProjects(ownerSelect.value);
+  }
 }
 </script>
 

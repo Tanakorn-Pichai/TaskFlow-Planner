@@ -3,23 +3,35 @@
 <h2>Create Task</h2>
 
 <form method="POST">
-Owner:
-<select id="ownerSelect">
-  <option value="">-- Select Owner --</option>
-  <% users.forEach(u => { %>
-    <option value="<%= u.user_id %>">
-      <%= u.name %>
-    </option>
-  <% }) %>
-</select>
-<br>
+
+<% if (user.role === 'admin') { %>
+
+  <!-- ADMIN เลือก Owner ได้ -->
+  Owner:
+  <select id="ownerSelect">
+    <option value="">-- Select Owner --</option>
+    <% users.forEach(u => { %>
+      <option value="<%= u.user_id %>">
+        <%= u.name %>
+      </option>
+    <% }) %>
+  </select>
+  <br>
+
+<% } else { %>
+
+  <!-- USER ไม่ต้องเลือก -->
+  <p><strong>Owner:</strong> <%= user.name %></p>
+  <input type="hidden" id="ownerSelect" value="<%= user.user_id %>">
+
+<% } %>
+
 
 Project:
 <select name="project_id" id="projectSelect" required>
   <option value="">-- Select Project --</option>
 </select>
 <br>
-
 
 Description:
 <textarea name="description"></textarea><br>
@@ -34,7 +46,7 @@ Priority:
 
 Status:
 <select name="status">
-  <option value="pending" selected>Planning</option>
+  <option value="pending" selected>Pending</option>
   <option value="In progress">In Progress</option>
   <option value="completed">Completed</option>
 </select>
@@ -54,15 +66,13 @@ const users = <%- JSON.stringify(users) %>;
 const ownerSelect = document.getElementById('ownerSelect');
 const projectSelect = document.getElementById('projectSelect');
 
-ownerSelect.addEventListener('change', function () {
-  const userId = this.value;
+function loadProjects(userId) {
   projectSelect.innerHTML = '<option value="">-- Select Project --</option>';
 
   if (!userId) return;
 
   const user = users.find(u => u.user_id == userId);
-
-  if (!user || !user.Projects || user.Projects.length === 0) return;
+  if (!user || !user.Projects) return;
 
   user.Projects.forEach(p => {
     const option = document.createElement('option');
@@ -70,5 +80,18 @@ ownerSelect.addEventListener('change', function () {
     option.textContent = p.project_name;
     projectSelect.appendChild(option);
   });
-});
+}
+
+if (ownerSelect) {
+  ownerSelect.addEventListener('change', function () {
+    loadProjects(this.value);
+  });
+
+  // auto load for user
+  if (ownerSelect.value) {
+    loadProjects(ownerSelect.value);
+  }
+}
 </script>
+
+<%- include('../partials/footer') %>

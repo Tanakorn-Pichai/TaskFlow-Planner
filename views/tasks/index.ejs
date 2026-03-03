@@ -13,22 +13,43 @@
 <th>Action</th>
 </tr>
 
-<% tasks.forEach(t => { %>
+<% tasks.forEach((t, index) => { %>
 <tr>
-<td><%= t.title %></td>
+
+<td>
+  <% if (user.role === 'admin') { %>
+    <%= t.title %>
+  <% } else { %>
+    <%= index + 1 %>
+  <% } %>
+</td>
+
 <td><%= t.Project ? t.Project.project_name : '' %></td>
+
 <td>
   <%= t.Project && t.Project.User 
       ? t.Project.User.name 
       : '' %>
 </td>
+
 <td><%= t.status %></td>
 <td><%= t.priority %></td>
+
 <td>
-<a href="/tasks/show/<%= t.task_id %>">Show</a>
-<a href="/tasks/edit/<%= t.task_id %>">Edit</a>
-<a href="/tasks/delete/<%= t.task_id %>">Delete</a>
+  <a href="/tasks/show/<%= t.task_id %>">Show</a>
+
+  <% if (
+      user.role === 'admin' ||
+      (t.Project && t.Project.user_id === user.user_id)
+  ) { %>
+
+    <a href="/tasks/edit/<%= t.task_id %>">Edit</a>
+    <a href="/tasks/delete/<%= t.task_id %>">Delete</a>
+
+  <% } %>
+
 </td>
+
 </tr>
 <% }) %>
 

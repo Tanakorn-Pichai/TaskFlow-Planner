@@ -44,8 +44,19 @@ const Task = sequelize.define("tasks", {
 const TaskLog = sequelize.define("task_logs", {
   log_id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   task_id: { type: DataTypes.INTEGER, allowNull: false },
-  action: DataTypes.ENUM("create", "update", "done"),
+
+  action: DataTypes.ENUM(
+    "CREATE",
+    "UPDATE",
+    "DELETE",
+    "STATUS_CHANGE",
+    "PRIORITY_CHANGE"
+  ),
+
+  description: DataTypes.TEXT,
+
   time_spent: DataTypes.INTEGER,
+
   created_at: { type: DataTypes.DATE, defaultValue: Sequelize.NOW }
 }, { timestamps: false });
 
@@ -168,15 +179,22 @@ const users = await User.bulkCreate([
   const createdTasks = await Task.bulkCreate(tasks);
 
   // ---------- TASK LOGS (40) ----------
-  const logs = [];
-  for (let i = 1; i <= 40; i++) {
-    logs.push({
-      task_id: randomFrom(createdTasks).task_id,
-      action: randomFrom(["create", "update", "done"]),
-      time_spent: Math.floor(Math.random() * 180) + 10,
-      created_at: randomDate(60)
-    });
-  }
+const logs = [];
+for (let i = 1; i <= 40; i++) {
+  logs.push({
+    task_id: randomFrom(createdTasks).task_id,
+    action: randomFrom([
+      "CREATE",
+      "UPDATE",
+      "DELETE",
+      "STATUS_CHANGE",
+      "PRIORITY_CHANGE"
+    ]),
+    description: "Auto generated log",
+    time_spent: Math.floor(Math.random() * 180) + 10,
+    created_at: randomDate(60)
+  });
+}
 
   await TaskLog.bulkCreate(logs);
 

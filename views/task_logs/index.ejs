@@ -2,7 +2,6 @@
 
 <h2>Task Logs</h2>
 
-
 <table border="1">
 <tr>
 <th>Task</th>
@@ -12,10 +11,19 @@
 <th>Action</th>
 </tr>
 
-<% logs.forEach(l => { %>
+<% logs.forEach((l, index) => { %>
 <tr>
-<td><%= l.Task ? l.Task.title : '' %></td>
+
+<td>
+  <% if (user.role === 'admin') { %>
+    <%= l.Task ? l.Task.title : '' %>
+  <% } else { %>
+    Task #<%= index + 1 %>
+  <% } %>
+</td>
+
 <td><%= l.action %></td>
+
 <td>
   <% 
     const hours = Math.floor(l.time_spent / 60);
@@ -23,10 +31,13 @@
   %>
   <%= hours > 0 ? hours + ' hr ' : '' %><%= minutes %> min
 </td>
+
 <td><%= new Date(l.created_at).toLocaleDateString('en-GB') %></td>
+
 <td>
-<a href="/task-logs/show/<%= l.log_id %>">Show</a>
+  <a href="/task-logs/show/<%= l.log_id %>">Show</a>
 </td>
+
 </tr>
 <% }) %>
 
