@@ -39,20 +39,24 @@ exports.index = async (req, res) => {
 }
 
 exports.show = async (req, res) => {
-  const log = await TaskLog.findByPk(req.params.id, {
-    include: {
-      model: Task,
-      include: {
-        model: Project,
-        include: User
+  const taskLog = await TaskLog.findByPk(req.params.id, {
+    include: [
+      {
+        model: Task,
+        include: [
+          {
+            model: Project,
+            include: [User]
+          }
+        ]
       }
-    }
+    ]
   })
 
-  if (!log) {
+  if (!taskLog) {
     req.flash('error', 'Log not found')
     return res.redirect('/task-logs')
   }
 
-  res.render('task_logs/show', { log })
+  res.render('task_logs/show', { taskLog })
 }

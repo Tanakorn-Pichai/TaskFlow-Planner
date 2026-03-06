@@ -50,93 +50,49 @@ exports.longestTasks = async (req, res) => {
 =================================*/
 exports.userPerformanceReport = async (req, res) => {
   try {
+    // Get the current user from session
+    const currentUser = req.session.user;
+
+    // Fetch all users with their projects and tasks
     const users = await User.findAll({
-      attributes: [
-        "user_id",
-        "name",
-
-        // จำนวนโปรเจค
-        [
-          fn("COUNT", fn("DISTINCT", col("Projects.project_id"))),
-          "total_projects",
-        ],
-
-        // จำนวนงานทั้งหมด
-        [
-          fn("COUNT", fn("DISTINCT", col("Projects->Tasks.task_id"))),
-          "total_tasks",
-        ],
-
-        // จำนวนงานที่เสร็จ
-        [
-          fn(
-            "COUNT",
-            literal(`DISTINCT CASE 
-              WHEN \`Projects->Tasks\`.\`status\` = 'Completed'
-              THEN \`Projects->Tasks\`.\`task_id\`
-            END`)
-          ),
-          "completed_tasks",
-        ],
-
-        // เวลารวมทั้งหมด (กัน NULL)
-        [
-          fn(
-            "COALESCE",
-            fn("SUM", col("Projects->Tasks->TaskLogs.time_spent")),
-            0
-          ),
-          "total_time_spent",
-        ],
-      ],
-
       include: [
         {
           model: Project,
-          attributes: [],
           include: [
             {
               model: Task,
-              attributes: [],
-              include: [
-                {
-                  model: TaskLog,
-                  attributes: [],
-                },
-              ],
+              include: [TaskLog],
             },
           ],
         },
       ],
-
-      group: ["User.user_id", "User.name"], // สำคัญมาก
-      raw: true,
     });
 
-    // 🔥 แปลงค่า + คำนวณเปอร์เซ็นต์
-    const formatted = users.map((u) => {
-      const totalProjects = Number(u.total_projects) || 0;
-      const totalTasks = Number(u.total_tasks) || 0;
-      const completedTasks = Number(u.completed_tasks) || 0;
-      const totalTime = Number(u.total_time_spent) || 0;
+    // 🔥 Calculate stats for each user
+    const formatted = users.map((user) => {
+      const projects = user.Projects || [];
+      const tasks = projects.flatMap((p) => p.Tasks || []);
+      const taskLogs = tasks.flatMap((t) => t.TaskLogs || []);
 
-      const completionRate =
-        totalTasks > 0
-          ? (completedTasks / totalTasks) * 100
-          : 0;
+      const totalProjects = projects.length;
+      const totalTasks = tasks.length;
+      const completedTasks = tasks.filter((t) => t.status === "Completed").length;
+      const totalTime = taskLogs.reduce((sum, log) => sum + (log.time_spent || 0), 0);
+
+      const completionRate = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
       return {
-        user_id: u.user_id,
-        name: u.name,
+        user_id: user.user_id,
+        name: user.name,
         total_projects: totalProjects,
         total_tasks: totalTasks,
         completed_tasks: completedTasks,
         total_time_spent: totalTime,
-        completion_rate: Number(completionRate.toFixed(1)), // บังคับเป็น number
+        completion_rate: Number(completionRate.toFixed(1)),
       };
     });
 
-    // 🔥 เรียงอันดับ (เปอร์เซ็นต์ > เวลารวม > จำนวนงาน)
+    // 🔥 Sort by rank (completion % > total time > number of tasks)
     formatted.sort((a, b) => {
       if (b.completion_rate !== a.completion_rate)
         return b.completion_rate - a.completion_rate;
@@ -147,15 +103,15 @@ exports.userPerformanceReport = async (req, res) => {
       return b.total_tasks - a.total_tasks;
     });
 
-    // 🔥 ใส่ Rank
+    // 🔥 Add rank
     formatted.forEach((user, index) => {
       user.rank = index + 1;
     });
 
-    res.render("reports/report2", { users: formatted });
+    res.render("reports/report2", { users: formatted, user: currentUser });
 
   } catch (error) {
     console.error(error);
-    res.send("Error generating report");
+    res.render("reports/report2", { users: [], user: req.session.user, error: "Error generating report" });
   }
 };

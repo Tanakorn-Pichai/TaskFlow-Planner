@@ -3,7 +3,7 @@
 <h2>Log Detail</h2>
 
 <div class="stat-card users">
-<h3><%= log.Task.title %></h3>
+<h3><%= taskLog.Task.title %></h3>
   <table class="log-detail-table">
     <tbody>
 
@@ -11,27 +11,27 @@
 
       <tr>
         <th>Project</th>
-        <td><%= log.Task.Project.project_name %></td>
+        <td><%= taskLog.Task && taskLog.Task.Project ? taskLog.Task.Project.project_name : 'N/A' %></td>
       </tr>
 
       <tr>
         <th>Owner</th>
-        <td><%= log.Task.Project.User.name %></td>
+        <td><%= taskLog.Task && taskLog.Task.Project && taskLog.Task.Project.User ? taskLog.Task.Project.User.name : 'N/A' %></td>
       </tr>
 
       <tr>
         <th>Action</th>
-        <td><%= log.action %></td>
+        <td><%= taskLog.action %></td>
       </tr>
 
       <tr>
         <th>Time Spent</th>
-        <td><%= log.time_spent %> minutes</td>
+        <td><%= taskLog.time_spent %> minutes</td>
       </tr>
 
       <tr>
         <th>Date</th>
-        <td><%= new Date(log.created_at).toLocaleString() %></td>
+        <td><%= new Date(taskLog.created_at).toLocaleString() %></td>
       </tr>
 
     </tbody>
@@ -39,7 +39,7 @@
 
   <div class="log-actions">
     <a href="/task-logs">
-      <button type="button" class="btn-back">⬅ Back</button>
+      <button type="button" style="background:#7f8c8d;">⬅ Back</button>
     </a>
   </div>
 

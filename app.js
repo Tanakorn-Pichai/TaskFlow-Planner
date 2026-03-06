@@ -251,7 +251,7 @@ app.get("/users/:id", isAuth, isAdmin, async (req, res) => {
   }
 });
 
-app.get("/users/:id/edit", isAuth, isAdmin, async (req, res) => {
+app.get("/users/edit/:id", isAuth, isAdmin, async (req, res) => {
   try {
     const response = await axios.get(`${BACKEND_URL}/users/${req.params.id}`);
     const viewUser = response.data.user;
@@ -457,7 +457,7 @@ app.get("/projects/:id", isAuth, async (req, res) => {
   }
 });
 
-app.get("/projects/:id/edit", isAuth, async (req, res) => {
+app.get("/projects/edit/:id", isAuth, async (req, res) => {
   try {
     const query =
       req.session.user.role === "user"
@@ -531,7 +531,7 @@ app.get("/tasks/create", isAuth, async (req, res) => {
   }
 });
 
-app.get("/tasks/:id", isAuth, async (req, res) => {
+app.get("/tasks/show/:id", isAuth, async (req, res) => {
   try {
     const query =
       req.session.user.role === "user"
@@ -547,7 +547,7 @@ app.get("/tasks/:id", isAuth, async (req, res) => {
   }
 });
 
-app.get("/tasks/:id/edit", isAuth, async (req, res) => {
+app.get("/tasks/edit/:id", isAuth, async (req, res) => {
   try {
     const query =
       req.session.user.role === "user"
@@ -595,7 +595,7 @@ app.get("/task-logs", isAuth, async (req, res) => {
   }
 });
 
-app.get("/task-logs/:id", isAuth, async (req, res) => {
+app.get("/task-logs/show/:id", isAuth, async (req, res) => {
   try {
     const query =
       req.session.user.role === "user"
@@ -629,12 +629,12 @@ app.get("/reports", isAuth, async (req, res) => {
 app.get("/reports/report2", isAuth, async (req, res) => {
   try {
     const response = await axios.get(`${BACKEND_URL}/reports/user-performance`);
-    const result = response.data.data || [];
-    res.render("reports/report2", { result, user: req.session.user });
+    const users = response.data.data || [];
+    res.render("reports/report2", { users, user: req.session.user });
   } catch (error) {
     console.error("Error fetching report:", error.message);
     req.flash("error", "Failed to load report");
-    res.render("reports/report2", { result: [], user: req.session.user });
+    res.render("reports/report2", { users: [], user: req.session.user });
   }
 });
 

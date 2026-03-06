@@ -74,7 +74,7 @@ Status:
 
 Due Date:
 <input type="date" name="due_date"
-value="<%= task.due_date ? task.due_date.toISOString().split('T')[0] : '' %>">
+value="<%= task.due_date ? new Date(task.due_date).toISOString().split('T')[0] : '' %>">
 <br>
 
 <button type="submit"class="btn-update" >Update</button>

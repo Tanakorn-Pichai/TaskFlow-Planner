@@ -17,6 +17,9 @@
   --color-danger: #e74c3c;
   --color-danger-hover: #c0392b;
 
+  --color-warning: #f39c12;
+  --color-warning-hover: #e67e22;
+
   /* เทาเข้ม อ่านง่าย */
   --color-gray: #4b5563;
   --color-gray-hover: #292c31;
@@ -140,6 +143,9 @@ button {
 
 .btn-danger { background: var(--color-danger); }
 .btn-danger:hover { background: var(--color-danger-hover); }
+
+.btn-warning { background: var(--color-warning); }
+.btn-warning:hover { background: var(--color-warning-hover); }
 
 .btn-secondary { background: var(--color-gray); }
 .btn-secondary:hover { background: var(--color-gray-hover); }
@@ -737,9 +743,11 @@ body.dark-mode .stat-card.users td {
 }
 
 /* Edit (น้ำเงิน) */
-.stat-card.users button:not([style]) {
+/* .stat-card.users button:not([style]) {
   background: #2563eb;
-}
+} */
+
+
 
 /* Delete (แดง) */
 .stat-card.users button[style*="e74c3c"] {

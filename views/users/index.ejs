@@ -26,7 +26,7 @@
 <td><%= new Date(u.created_at).toLocaleDateString() %></td>
 <td>
   <a href="/users/<%= u.user_id %>">Show</a>
-  <a href="/users/<%= u.user_id %>/edit">Edit</a>
+  <a href="/users/edit/<%= u.user_id %>">Edit</a>
   <a href="/users/delete/<%= u.user_id%>" 
        onclick="return confirm('Delete this user?')">
        Delete

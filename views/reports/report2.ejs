@@ -28,19 +28,23 @@
     </tr>
   </thead>
   <tbody>
-    <% users.forEach(u => { %>
-      <tr data-user-id="<%= u.user_id %>">
-        <td data-value="<%= u.rank %>"><%= u.rank %></td>
-        <td><%= u.name %></td>
-        <td data-value="<%= u.total_projects || 0 %>"><%= u.total_projects || 0 %></td>
-        <td data-value="<%= u.total_tasks || 0 %>"><%= u.total_tasks || 0 %></td>
-        <td data-value="<%= u.completed_tasks || 0 %>"><%= u.completed_tasks || 0 %></td>
-        <td data-value="<%= u.total_time_spent || 0 %>"><%= u.total_time_spent || 0 %></td>
-        <td data-value="<%= u.completion_rate || 0 %>">
-          <%= u.completion_rate || 0 %> %
-        </td>
-      </tr>
-    <% }) %>
+    <% if (users && users.length > 0) { %>
+      <% users.forEach(u => { %>
+        <tr data-user-id="<%= u.user_id %>">
+          <td data-value="<%= u.rank %>"><%= u.rank %></td>
+          <td><%= u.name %></td>
+          <td data-value="<%= u.total_projects || 0 %>"><%= u.total_projects || 0 %></td>
+          <td data-value="<%= u.total_tasks || 0 %>"><%= u.total_tasks || 0 %></td>
+          <td data-value="<%= u.completed_tasks || 0 %>"><%= u.completed_tasks || 0 %></td>
+          <td data-value="<%= u.total_time_spent || 0 %>"><%= u.total_time_spent || 0 %></td>
+          <td data-value="<%= u.completion_rate || 0 %>">
+            <%= u.completion_rate || 0 %> %
+          </td>
+        </tr>
+      <% }) %>
+    <% } else { %>
+      <tr><td colspan="7" style="text-align: center;">No user data available</td></tr>
+    <% } %>
   </tbody>
 </table>
 

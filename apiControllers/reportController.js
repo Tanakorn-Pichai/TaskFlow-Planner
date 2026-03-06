@@ -64,31 +64,45 @@ exports.userPerformance = async (req, res) => {
       ],
     });
 
+    // 🔥 Calculate stats for each user
     const result = users.map((user) => {
-      let totalTasks = 0;
-      let completedTasks = 0;
-      let totalHours = 0;
+      const projects = user.Projects || [];
+      const tasks = projects.flatMap((p) => p.Tasks || []);
+      const taskLogs = tasks.flatMap((t) => t.TaskLogs || []);
 
-      user.Projects.forEach((project) => {
-        project.Tasks.forEach((task) => {
-          totalTasks++;
-          if (task.status === "completed") {
-            completedTasks++;
-          }
-          task.TaskLogs.forEach((log) => {
-            totalHours += log.hours_worked || 0;
-          });
-        });
-      });
+      const totalProjects = projects.length;
+      const totalTasks = tasks.length;
+      const completedTasks = tasks.filter((t) => t.status === "Completed").length;
+      const totalTimeSpent = taskLogs.reduce((sum, log) => sum + (log.time_spent || 0), 0);
+
+      const completionRate = totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0;
 
       return {
+        user_id: user.user_id,
         name: user.name,
         email: user.email,
-        totalTasks,
-        completedTasks,
-        totalHours,
-        completionRate: totalTasks > 0 ? ((completedTasks / totalTasks) * 100).toFixed(2) : 0,
+        total_projects: totalProjects,
+        total_tasks: totalTasks,
+        completed_tasks: completedTasks,
+        total_time_spent: totalTimeSpent,
+        completion_rate: Number(completionRate.toFixed(1)),
       };
+    });
+
+    // 🔥 Sort by rank (completion % > total time > number of tasks)
+    result.sort((a, b) => {
+      if (b.completion_rate !== a.completion_rate)
+        return b.completion_rate - a.completion_rate;
+
+      if (b.total_time_spent !== a.total_time_spent)
+        return b.total_time_spent - a.total_time_spent;
+
+      return b.total_tasks - a.total_tasks;
+    });
+
+    // 🔥 Add rank
+    result.forEach((user, index) => {
+      user.rank = index + 1;
     });
 
     res.json({ success: true, report: 'user_performance', data: result });
