@@ -4,8 +4,12 @@
   "description": "Project Full Stack",
   "main": "index.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js",
+    "start": "concurrently \"node server.js\" \"node app.js\"",
+    "dev": "concurrently \"nodemon server.js\" \"nodemon app.js\"",
+    "backend": "node server.js",
+    "backend:dev": "nodemon server.js",
+    "frontend": "node app.js",
+    "frontend:dev": "nodemon app.js",
     "seed": "node database/seed.js"
   },
   "repository": {
@@ -23,13 +27,16 @@
     "axios": "^1.13.5",
     "bcrypt": "^6.0.0",
     "connect-flash": "^0.1.1",
+    "cors": "^2.8.6",
     "ejs": "^4.0.1",
     "express": "^5.2.1",
     "express-session": "^1.19.0",
+    "method-override": "^3.0.0",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
   },
   "devDependencies": {
+    "concurrently": "^9.0.0",
     "dotenv": "^17.3.1",
     "nodemon": "^3.1.13"
   }
