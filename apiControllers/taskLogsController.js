@@ -5,23 +5,30 @@ const { TaskLog, Task, Project, User } = require('../models')
 // =============================
 exports.index = async (req, res) => {
   try {
+    const { user_id } = req.query;
+    // if filtering by user, constrain via Task->Project.user_id
+    const projectInclude = {
+      model: Project,
+      include: [{
+        model: User,
+        attributes: ['user_id', 'name', 'email'],
+      }],
+    };
+    if (user_id) {
+      projectInclude.where = { user_id };
+    }
+
     const taskLogs = await TaskLog.findAll({
       include: [{
         model: Task,
-        include: [{
-          model: Project,
-          include: [{
-            model: User,
-            attributes: ['user_id', 'name', 'email']
-          }]
-        }]
-      }]
-    })
+        include: [projectInclude],
+      }],
+    });
 
-    res.json({ success: true, taskLogs })
+    res.json({ success: true, taskLogs });
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Failed to load task logs' })
+    console.error(err);
+    res.status(500).json({ error: 'Failed to load task logs' });
   }
 }
 
@@ -32,12 +39,21 @@ exports.show = async (req, res) => {
   try {
     const taskLog = await TaskLog.findByPk(req.params.id, {
       include: [{
-        model: Task
+        model: Task,
+        include: [
+          {
+            model: Project,
+          },
+        ],
       }]
     })
 
     if (!taskLog) {
       return res.status(404).json({ error: 'Task log not found' })
+    }
+
+    if (req.query.user_id && taskLog.Task && taskLog.Task.Project && taskLog.Task.Project.user_id.toString() !== req.query.user_id) {
+      return res.status(403).json({ error: 'Access denied' })
     }
 
     res.json({ success: true, taskLog })
@@ -53,6 +69,16 @@ exports.show = async (req, res) => {
 exports.create = async (req, res) => {
   try {
     const { task_id, log_date, time_spent, description } = req.body
+
+    if (req.query.user_id) {
+      const task = await Task.findByPk(task_id);
+      if (task) {
+        const project = await Project.findByPk(task.project_id);
+        if (project && project.user_id.toString() !== req.query.user_id) {
+          return res.status(403).json({ error: 'Access denied' });
+        }
+      }
+    }
 
     const newTaskLog = await TaskLog.create({
       task_id,
@@ -78,10 +104,21 @@ exports.create = async (req, res) => {
 exports.update = async (req, res) => {
   try {
     const { task_id, log_date, time_spent, description } = req.body
-    const taskLog = await TaskLog.findByPk(req.params.id)
+    const taskLog = await TaskLog.findByPk(req.params.id, {
+      include: [{
+        model: Task,
+      }]
+    })
 
     if (!taskLog) {
       return res.status(404).json({ error: 'Task log not found' })
+    }
+
+    if (req.query.user_id && taskLog.Task) {
+      const project = await Project.findByPk(taskLog.Task.project_id);
+      if (project && project.user_id.toString() !== req.query.user_id) {
+        return res.status(403).json({ error: 'Access denied' })
+      }
     }
 
     await taskLog.update({
@@ -107,10 +144,19 @@ exports.update = async (req, res) => {
 // =============================
 exports.delete = async (req, res) => {
   try {
-    const taskLog = await TaskLog.findByPk(req.params.id)
+    const taskLog = await TaskLog.findByPk(req.params.id, {
+      include: [{ model: Task }]
+    })
 
     if (!taskLog) {
       return res.status(404).json({ error: 'Task log not found' })
+    }
+
+    if (req.query.user_id && taskLog.Task) {
+      const project = await Project.findByPk(taskLog.Task.project_id);
+      if (project && project.user_id.toString() !== req.query.user_id) {
+        return res.status(403).json({ error: 'Access denied' })
+      }
     }
 
     await taskLog.destroy()

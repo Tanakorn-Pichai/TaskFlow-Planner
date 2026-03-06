@@ -32,6 +32,21 @@
 Project:
 <select name="project_id" id="projectSelect" required>
   <option value="">-- Select Project --</option>
+  <% if (user.role === 'admin') { %>
+    <!-- Admin projects will be loaded dynamically from users array -->
+  <% } else { %>
+    <!-- Non-admin users see their own projects -->
+    <% if (projects && projects.length > 0) { %>
+      <% projects.forEach(p => { %>
+        <option value="<%= p.project_id %>"
+          <%= task.project_id == p.project_id ? 'selected' : '' %>>
+          <%= p.project_name %>
+        </option>
+      <% }) %>
+    <% } else { %>
+      <option value="" disabled>No projects available</option>
+    <% } %>
+  <% } %>
 </select>
 <br>
 
@@ -69,6 +84,7 @@ value="<%= task.due_date ? task.due_date.toISOString().split('T')[0] : '' %>">
 
 <script>
 const users = <%- JSON.stringify(users) %>;
+const projects = <%- JSON.stringify(projects || []) %>;
 const selectedProjectId = <%= task.project_id %>;
 
 const ownerSelect = document.getElementById('ownerSelect');
@@ -93,6 +109,8 @@ function loadProjects(userId) {
   });
 }
 
+// If non-admin user and projects are pre-loaded, they're already in the select
+// If admin, load projects from users array
 if (ownerSelect) {
   ownerSelect.addEventListener('change', function () {
     loadProjects(this.value);

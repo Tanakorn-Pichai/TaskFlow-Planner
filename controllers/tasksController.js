@@ -40,18 +40,28 @@ exports.index = async (req, res) => {
 ========================= */
 exports.createForm = async (req, res) => {
   const user = req.session.user
-  let users
+  let users, projects, taskCount
 
   if (user.role === 'admin') {
     users = await User.findAll({ include: [Project] })
+    projects = await Project.findAll()
+    taskCount = await Task.count()
   } else {
     users = await User.findAll({
       where: { user_id: user.user_id },
       include: [Project]
     })
+    projects = await Project.findAll({ where: { user_id: user.user_id } })
+    taskCount = await Task.count({
+      include: [{
+        model: Project,
+        where: { user_id: user.user_id },
+        required: true
+      }]
+    })
   }
 
-  res.render('tasks/create', { users })
+  res.render('tasks/create', { users, projects, user, taskCount })
 }
 
 /* =========================

@@ -27,9 +27,10 @@
 <td>
   <a href="/users/<%= u.user_id %>">Show</a>
   <a href="/users/<%= u.user_id %>/edit">Edit</a>
-  <form method="POST" action="/users/<%= u.user_id %>?_method=DELETE" style="display: inline;" onsubmit="return confirm('Delete this user?')">
-    <button type="submit" style="background: none; border: none; color: red; cursor: pointer;">Delete</button>
-  </form>
+  <a href="/users/delete/<%= u.user_id%>" 
+       onclick="return confirm('Delete this user?')">
+       Delete
+    </a>
 </td>
 </tr>
 <% }) %>
