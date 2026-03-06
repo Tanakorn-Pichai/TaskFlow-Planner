@@ -1,4 +1,4 @@
-const { User } = require('../models')
+const { User, Project } = require('../models')
 
 // =============================
 // API LIST USERS
@@ -6,7 +6,11 @@ const { User } = require('../models')
 exports.index = async (req, res) => {
   try {
     const users = await User.findAll({
-      attributes: { exclude: ['password'] } // Don't send passwords
+      attributes: { exclude: ['password'] },
+      include: [{
+        model: Project,
+        attributes: ['project_id', 'project_name']
+      }]
     })
     res.json({ success: true, users })
   } catch (err) {

@@ -2,11 +2,10 @@
 
 <h2>Create Task</h2>
 
-<form method="POST">
+<form method="POST" action="/tasks">
 
 <% if (user.role === 'admin') { %>
 
-  <!-- ADMIN เลือก Owner ได้ -->
   Owner:
   <select id="ownerSelect">
     <option value="">-- Select Owner --</option>
@@ -20,7 +19,7 @@
 
 <% } else { %>
 
-  <!-- USER ไม่ต้องเลือก -->
+
   <p><strong>Owner:</strong> <%= user.name %></p>
   <input type="hidden" id="ownerSelect" value="<%= user.user_id %>">
 
@@ -32,6 +31,9 @@ Project:
   <option value="">-- Select Project --</option>
 </select>
 <br>
+
+Title:
+<input type="text" name="title" required><br>
 
 Description:
 <textarea name="description"></textarea><br>
@@ -87,7 +89,7 @@ if (ownerSelect) {
     loadProjects(this.value);
   });
 
-  // auto load for user
+
   if (ownerSelect.value) {
     loadProjects(ownerSelect.value);
   }

@@ -12,7 +12,7 @@
 %>
 <h2>Create Project</h2>
 
-<form method="POST">
+<form method="POST" action="/projects">
 Project Name: <input name="project_name"><br>
 
 <% if (user.role === 'admin') { %>

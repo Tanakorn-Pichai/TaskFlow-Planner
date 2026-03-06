@@ -2,7 +2,8 @@
 
 <h2>Edit Project</h2>
 
-<form method="POST">
+<form method="POST" action="/projects/<%= project.project_id %>">
+  <input type="hidden" name="_method" value="PUT">
 Project Name: <input name="project_name" value="<%= project.project_name %>"><br>
 
 <% if (user.role === 'admin') { %>

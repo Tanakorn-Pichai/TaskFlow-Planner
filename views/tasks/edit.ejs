@@ -3,6 +3,7 @@
 <h2>Edit Task</h2>
 
 <form method="POST" action="/tasks/edit/<%= task.task_id %>">
+  <input type="hidden" name="_method" value="PUT">
 
 <% if (user.role === 'admin') { %>
 
@@ -35,7 +36,7 @@ Project:
 <br>
 
 Title:
-<input name="title" value="<%= task.title %>" disabled><br>
+<input name="title" value="<%= task.title %>" required><br>
 
 Description:
 <textarea name="description"><%= task.description %></textarea><br>

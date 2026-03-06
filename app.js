@@ -179,6 +179,10 @@ app.get('/users', isAuth, isAdmin, async (req, res) => {
   }
 })
 
+app.get('/users/create', isAuth, isAdmin, (req, res) => {
+  res.render('users/create', { user: req.session.user })
+})
+
 app.get('/users/:id', isAuth, isAdmin, async (req, res) => {
   try {
     const response = await axios.get(`${BACKEND_URL}/users/${req.params.id}`)
@@ -201,10 +205,6 @@ app.get('/users/:id/edit', isAuth, isAdmin, async (req, res) => {
     req.flash('error', 'User not found')
     res.redirect('/users')
   }
-})
-
-app.get('/users/create', isAuth, isAdmin, (req, res) => {
-  res.render('users/create', { user: req.session.user })
 })
 
 // Users CRUD operations
@@ -246,6 +246,84 @@ app.delete('/users/:id', isAuth, isAdmin, async (req, res) => {
   }
 })
 
+// ==================== PROJECTS CRUD ====================
+app.post('/projects', isAuth, async (req, res) => {
+  try {
+    await axios.post(`${BACKEND_URL}/projects`, req.body)
+    req.flash('success', 'Project created successfully')
+    res.redirect('/projects')
+  } catch (error) {
+    console.error('Error creating project:', error.message)
+    const errorMessage = error.response?.data?.error || 'Failed to create project'
+    req.flash('error', errorMessage)
+    res.redirect('/projects/create')
+  }
+})
+
+app.post('/projects/:id', isAuth, async (req, res) => {
+  try {
+    await axios.put(`${BACKEND_URL}/projects/${req.params.id}`, req.body)
+    req.flash('success', 'Project updated successfully')
+    res.redirect('/projects')
+  } catch (error) {
+    console.error('Error updating project:', error.message)
+    const errorMessage = error.response?.data?.error || 'Failed to update project'
+    req.flash('error', errorMessage)
+    res.redirect(`/projects/${req.params.id}/edit`)
+  }
+})
+
+app.get('/projects/delete/:id', isAuth, async (req, res) => {
+  try {
+    await axios.delete(`${BACKEND_URL}/projects/${req.params.id}`)
+    req.flash('success', 'Project deleted successfully')
+    res.redirect('/projects')
+  } catch (error) {
+    console.error('Error deleting project:', error.message)
+    req.flash('error', 'Failed to delete project')
+    res.redirect('/projects')
+  }
+})
+
+// ==================== TASKS CRUD ====================
+app.post('/tasks', isAuth, async (req, res) => {
+  try {
+    await axios.post(`${BACKEND_URL}/tasks`, req.body)
+    req.flash('success', 'Task created successfully')
+    res.redirect('/tasks')
+  } catch (error) {
+    console.error('Error creating task:', error.message)
+    const errorMessage = error.response?.data?.error || 'Failed to create task'
+    req.flash('error', errorMessage)
+    res.redirect('/tasks/create')
+  }
+})
+
+app.post('/tasks/edit/:id', isAuth, async (req, res) => {
+  try {
+    await axios.put(`${BACKEND_URL}/tasks/${req.params.id}`, req.body)
+    req.flash('success', 'Task updated successfully')
+    res.redirect('/tasks')
+  } catch (error) {
+    console.error('Error updating task:', error.message)
+    const errorMessage = error.response?.data?.error || 'Failed to update task'
+    req.flash('error', errorMessage)
+    res.redirect(`/tasks/${req.params.id}/edit`)
+  }
+})
+
+app.get('/tasks/delete/:id', isAuth, async (req, res) => {
+  try {
+    await axios.delete(`${BACKEND_URL}/tasks/${req.params.id}`)
+    req.flash('success', 'Task deleted successfully')
+    res.redirect('/tasks')
+  } catch (error) {
+    console.error('Error deleting task:', error.message)
+    req.flash('error', 'Failed to delete task')
+    res.redirect('/tasks')
+  }
+})
+
 // Projects routes
 app.get('/projects', isAuth, async (req, res) => {
   try {
@@ -256,6 +334,21 @@ app.get('/projects', isAuth, async (req, res) => {
     console.error('Error fetching projects:', error.message)
     req.flash('error', 'Failed to load projects')
     res.render('projects/index', { projects: [], user: req.session.user })
+  }
+})
+
+app.get('/projects/create', isAuth, async (req, res) => {
+  try {
+    let users = []
+    if (req.session.user.role === 'admin') {
+      const response = await axios.get(`${BACKEND_URL}/users`)
+      users = response.data.users || []
+    }
+    res.render('projects/create', { users, user: req.session.user })
+  } catch (error) {
+    console.error('Error fetching users for project creation:', error.message)
+    req.flash('error', 'Failed to load users')
+    res.render('projects/create', { users: [], user: req.session.user })
   }
 })
 
@@ -273,18 +366,18 @@ app.get('/projects/:id', isAuth, async (req, res) => {
 
 app.get('/projects/:id/edit', isAuth, async (req, res) => {
   try {
-    const response = await axios.get(`${BACKEND_URL}/projects/${req.params.id}`)
-    const project = response.data.project
-    res.render('projects/edit', { project, user: req.session.user })
+    const [projectRes, usersRes] = await Promise.all([
+      axios.get(`${BACKEND_URL}/projects/${req.params.id}`),
+      req.session.user.role === 'admin' ? axios.get(`${BACKEND_URL}/users`) : Promise.resolve({ data: { users: [] } })
+    ])
+    const project = projectRes.data.project
+    const users = usersRes.data.users || []
+    res.render('projects/edit', { project, users, user: req.session.user })
   } catch (error) {
     console.error('Error fetching project:', error.message)
     req.flash('error', 'Project not found')
     res.redirect('/projects')
   }
-})
-
-app.get('/projects/create', isAuth, (req, res) => {
-  res.render('projects/create')
 })
 
 // Tasks routes
@@ -297,6 +390,21 @@ app.get('/tasks', isAuth, async (req, res) => {
     console.error('Error fetching tasks:', error.message)
     req.flash('error', 'Failed to load tasks')
     res.render('tasks/index', { tasks: [], user: req.session.user })
+  }
+})
+
+app.get('/tasks/create', isAuth, async (req, res) => {
+  try {
+    let users = []
+    if (req.session.user.role === 'admin') {
+      const response = await axios.get(`${BACKEND_URL}/users`)
+      users = response.data.users || []
+    }
+    res.render('tasks/create', { users, user: req.session.user })
+  } catch (error) {
+    console.error('Error fetching users for task creation:', error.message)
+    req.flash('error', 'Failed to load users')
+    res.render('tasks/create', { users: [], user: req.session.user })
   }
 })
 
@@ -314,18 +422,18 @@ app.get('/tasks/:id', isAuth, async (req, res) => {
 
 app.get('/tasks/:id/edit', isAuth, async (req, res) => {
   try {
-    const response = await axios.get(`${BACKEND_URL}/tasks/${req.params.id}`)
-    const task = response.data.task
-    res.render('tasks/edit', { task, user: req.session.user })
+    const [taskRes, usersRes] = await Promise.all([
+      axios.get(`${BACKEND_URL}/tasks/${req.params.id}`),
+      req.session.user.role === 'admin' ? axios.get(`${BACKEND_URL}/users`) : Promise.resolve({ data: { users: [] } })
+    ])
+    const task = taskRes.data.task
+    const users = usersRes.data.users || []
+    res.render('tasks/edit', { task, users, user: req.session.user })
   } catch (error) {
     console.error('Error fetching task:', error.message)
     req.flash('error', 'Task not found')
     res.redirect('/tasks')
   }
-})
-
-app.get('/tasks/create', isAuth, (req, res) => {
-  res.render('tasks/create')
 })
 
 // Task Logs routes

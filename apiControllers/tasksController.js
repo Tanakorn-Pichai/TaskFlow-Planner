@@ -55,7 +55,7 @@ exports.show = async (req, res) => {
 // =============================
 exports.create = async (req, res) => {
   try {
-    const { title, description, status, priority, project_id, assigned_to } = req.body
+    const { title, description, status, priority, project_id, due_date } = req.body
 
     const newTask = await Task.create({
       title,
@@ -63,7 +63,7 @@ exports.create = async (req, res) => {
       status,
       priority,
       project_id,
-      assigned_to
+      due_date
     })
 
     res.status(201).json({
@@ -82,7 +82,7 @@ exports.create = async (req, res) => {
 // =============================
 exports.update = async (req, res) => {
   try {
-    const { title, description, status, priority, project_id, assigned_to } = req.body
+    const { title, description, status, priority, project_id, due_date } = req.body
     const task = await Task.findByPk(req.params.id)
 
     if (!task) {
@@ -95,7 +95,7 @@ exports.update = async (req, res) => {
       status,
       priority,
       project_id,
-      assigned_to
+      due_date
     })
 
     res.json({
