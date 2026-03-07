@@ -16,6 +16,7 @@
         <%= task.Project && task.Project.user_id == u.user_id ? 'selected' : '' %>>
         <%= u.name %>
       </option>
+      
     <% }) %>
   </select>
   <br>
@@ -94,9 +95,9 @@ function loadProjects(userId) {
   projectSelect.innerHTML = '<option value="">-- Select Project --</option>';
 
   const user = users.find(u => u.user_id == userId);
-  if (!user || !user.Projects) return;
+  if (!user || !user.projects) return;
 
-  user.Projects.forEach(p => {
+  user.projects.forEach(p => {
     const option = document.createElement('option');
     option.value = p.project_id;
     option.textContent = p.project_name;
@@ -109,13 +110,13 @@ function loadProjects(userId) {
   });
 }
 
-// If non-admin user and projects are pre-loaded, they're already in the select
-// If admin, load projects from users array
-if (ownerSelect) {
+// Only run for admin users (who have a select dropdown for owner)
+if (ownerSelect && ownerSelect.tagName === 'SELECT') {
   ownerSelect.addEventListener('change', function () {
     loadProjects(this.value);
   });
 
+  // Load initial projects if admin has a selected owner
   if (ownerSelect.value) {
     loadProjects(ownerSelect.value);
   }

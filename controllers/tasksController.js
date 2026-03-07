@@ -47,10 +47,11 @@ exports.createForm = async (req, res) => {
     projects = await Project.findAll()
     taskCount = await Task.count()
   } else {
-    users = await User.findAll({
-      where: { user_id: user.user_id },
+    // For non-admin: get just the current user with their projects
+    const currentUser = await User.findByPk(user.user_id, {
       include: [Project]
     })
+    users = currentUser ? [currentUser] : []
     projects = await Project.findAll({ where: { user_id: user.user_id } })
     taskCount = await Task.count({
       include: [{
@@ -133,7 +134,15 @@ exports.editForm = async (req, res) => {
     return res.redirect('/tasks')
   }
 
-  const users = await User.findAll({ include: Project })
+  let users
+  if (req.session.user.role === 'admin') {
+    users = await User.findAll({ include: Project })
+  } else {
+    const currentUser = await User.findByPk(req.session.user.user_id, {
+      include: Project
+    })
+    users = currentUser ? [currentUser] : []
+  }
 
   res.render('tasks/edit', { task, users })
 }
