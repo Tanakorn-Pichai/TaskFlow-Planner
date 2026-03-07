@@ -1,10 +1,11 @@
 const { Sequelize, DataTypes } = require("sequelize");
 const path = require("path");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
-  storage: path.join(__dirname, "database.sqlite"),
+  storage: process.env.DB_PATH || path.join(__dirname, "database.sqlite"),
   logging: false
 });
 

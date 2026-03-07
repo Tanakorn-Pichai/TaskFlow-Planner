@@ -21,21 +21,26 @@ exports.index = async (req, res) => {
   } else {
 
     logs = await TaskLog.findAll({
-      include: {
-        model: Task,
-        required: true,
-        include: {
-          model: Project,
-          where: { user_id: user.user_id },
-          required: true
+      include: [
+        {
+          model: Task,
+          required: true,
+          include: [
+            {
+              model: Project,
+              required: true,
+              where: { user_id: user.user_id },
+              include: [User]
+            }
+          ]
         }
-      },
+      ],
       order: [['created_at', 'DESC']]
     })
 
   }
 
-  res.render('task_logs/index', { logs, user })
+  res.render('task_logs/index', { taskLogs: logs, user })
 }
 
 exports.show = async (req, res) => {

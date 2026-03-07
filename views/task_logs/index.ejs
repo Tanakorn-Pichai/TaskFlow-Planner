@@ -11,7 +11,7 @@
 <th data-column="1">Project</th>
 <th data-column="2">Owner</th>
 <th data-column="3">Action</th>
-<th data-column="4">Time Spent (min)</th>
+<th data-column="4">Time Spent</th>
 <th data-column="5">Date</th>
 <th>Action</th>
 </tr>
@@ -19,40 +19,39 @@
 
 <tbody>
 <% taskLogs.forEach((l, index) => { %>
-<tr>
+  <% if (l.Task && l.Task.Project && l.Task.Project.User) { %>
+  <tr>
 
 <td>
   <% if (user.role === 'admin') { %>
-    <%= l.Task ? l.Task.title : '' %>
+    <%= l.Task?.title || '' %>
   <% } else { %>
     Task #<%= index + 1 %>
   <% } %>
 </td>
 
 <td>
-  <%= l.Task && l.Task.Project 
-      ? l.Task.Project.project_name 
-      : '' %>
+  <%= l.Task?.Project?.project_name || '' %>
 </td>
 
 <td>
-  <%= l.Task && l.Task.Project && l.Task.Project.User
-      ? l.Task.Project.User.name
-      : '' %>
+  <%= l.Task?.Project?.User?.name || '' %>
 </td>
 
-<td><%= l.action %></td>
+<td>
+  <%= l.action %>
+</td>
 
 <td data-value="<%= l.time_spent %>">
   <% 
-    const hours = Math.floor(l.time_spent / 60);
-    const minutes = l.time_spent % 60;
+    const hours = Math.floor((l.time_spent || 0) / 60);
+    const minutes = (l.time_spent || 0) % 60;
   %>
   <%= hours > 0 ? hours + ' hr ' : '' %><%= minutes %> min
 </td>
 
 <td data-value="<%= l.created_at %>">
-  <%= new Date(l.created_at).toLocaleDateString('en-GB') %>
+  <%= l.created_at ? new Date(l.created_at).toLocaleDateString('en-GB') : '' %>
 </td>
 
 <td>
@@ -60,6 +59,7 @@
 </td>
 
 </tr>
+  <% } %>
 <% }) %>
 </tbody>
 </table>
