@@ -8,13 +8,12 @@
     <tbody>
 
       
-
       <tr>
         <th>Project</th>
         <td><%= taskLog.Task && taskLog.Task.Project ? taskLog.Task.Project.project_name : 'N/A' %></td>
       </tr>
-
       <tr>
+        
         <th>Owner</th>
         <td><%= taskLog.Task && taskLog.Task.Project && taskLog.Task.Project.User ? taskLog.Task.Project.User.name : 'N/A' %></td>
       </tr>

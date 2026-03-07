@@ -38,30 +38,44 @@ exports.index = async (req, res) => {
 exports.show = async (req, res) => {
   try {
     const taskLog = await TaskLog.findByPk(req.params.id, {
-      include: [{
-        model: Task,
-        include: [
-          {
-            model: Project,
-          },
-        ],
-      }]
-    })
+      include: [
+        {
+          model: Task,
+          include: [
+            {
+              model: Project,
+              include: [
+                {
+                  model: User,
+                  attributes: ["user_id", "name"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    });
 
     if (!taskLog) {
-      return res.status(404).json({ error: 'Task log not found' })
+      return res.status(404).json({ error: 'Task log not found' });
     }
 
-    if (req.query.user_id && taskLog.Task && taskLog.Task.Project && taskLog.Task.Project.user_id.toString() !== req.query.user_id) {
-      return res.status(403).json({ error: 'Access denied' })
+    if (
+      req.query.user_id &&
+      taskLog.Task &&
+      taskLog.Task.Project &&
+      taskLog.Task.Project.user_id.toString() !== req.query.user_id
+    ) {
+      return res.status(403).json({ error: 'Access denied' });
     }
 
-    res.json({ success: true, taskLog })
+    res.json({ success: true, taskLog });
+
   } catch (err) {
-    console.error(err)
-    res.status(500).json({ error: 'Failed to load task log' })
+    console.error(err);
+    res.status(500).json({ error: 'Failed to load task log' });
   }
-}
+};
 
 // =============================
 // API CREATE TASK LOG
