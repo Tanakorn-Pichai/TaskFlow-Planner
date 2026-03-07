@@ -1,6 +1,9 @@
 <%- include('../partials/header') %>
 
 <h1>🏆 User Performance Report</h1>
+<% if (typeof error !== 'undefined' && error) { %>
+  <div class="alert error"><%= error %></div>
+<% } %>
 <div class="print-header">
   
   <p>Date: <%= new Date().toLocaleDateString('en-GB') %></p>
@@ -30,6 +33,22 @@
   </thead>
   <tbody>
     <% if (users && users.length > 0) { %>
+      <% 
+        let totalProjects = 0;
+        let totalTasks = 0;
+        let totalCompleted = 0;
+        let totalTime = 0;
+        let avgCompletion = 0;
+        
+        users.forEach(u => {
+          totalProjects += u.total_projects || 0;
+          totalTasks += u.total_tasks || 0;
+          totalCompleted += u.completed_tasks || 0;
+          totalTime += u.total_time_spent || 0;
+        });
+        
+        avgCompletion = totalTasks > 0 ? ((totalCompleted / totalTasks) * 100).toFixed(1) : 0;
+      %>
       <% users.forEach(u => { %>
         <tr data-user-id="<%= u.user_id %>">
           <td data-value="<%= u.rank %>"><%= u.rank %></td>
@@ -39,10 +58,19 @@
           <td data-value="<%= u.completed_tasks || 0 %>"><%= u.completed_tasks || 0 %></td>
           <td data-value="<%= u.total_time_spent || 0 %>"><%= u.total_time_spent || 0 %></td>
           <td data-value="<%= u.completion_rate || 0 %>">
-            <%= u.completion_rate || 0 %> %
+            <%= u.completion_rate || 0 %>%
           </td>
         </tr>
       <% }) %>
+      <!-- Summary Row -->
+      <tr style="border-top: 2px solid #333; font-weight: bold; background-color: #f9f9f9;">
+        <td colspan="2">📊 SUMMARY</td>
+        <td data-value="<%= totalProjects %>"><%= totalProjects %></td>
+        <td data-value="<%= totalTasks %>"><%= totalTasks %></td>
+        <td data-value="<%= totalCompleted %>"><%= totalCompleted %></td>
+        <td data-value="<%= totalTime %>"><%= totalTime %></td>
+        <td data-value="<%= avgCompletion %>"><%= avgCompletion %>%</td>
+      </tr>
     <% } else { %>
       <tr><td colspan="7" style="text-align: center;">No user data available</td></tr>
     <% } %>
@@ -51,7 +79,9 @@
 </div>
 
 <script>
-  const currentUserId = <%= user.user_id %>;
+  // If for some reason the user object isn't passed (shouldn't happen due to isAuth),
+  // fall back to null to avoid JS errors.
+  const currentUserId = <%= user ? user.user_id : null %>;
 </script>
 
 <script src="/js/table.js"></script>

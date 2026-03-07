@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const rows = Array.from(tbody.querySelectorAll("tr"));
 
   let currentPage = 1;
-  let rowsPerPage = 10;
+  let rowsPerPage = 20;
   let filteredRows = [...rows];
 
   // ================= SEARCH =================
@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
     selector.appendChild(option);
   });
 
-  selector.value = 10;
+  selector.value = 20;
 
   selector.addEventListener("change", function () {
     rowsPerPage = parseInt(this.value);

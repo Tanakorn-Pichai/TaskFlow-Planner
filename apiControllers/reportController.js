@@ -66,9 +66,10 @@ exports.userPerformance = async (req, res) => {
 
     // 🔥 Calculate stats for each user
     const result = users.map((user) => {
-      const projects = user.projects || [];
-      const tasks = projects.flatMap((p) => p.tasks || []);
-      const taskLogs = tasks.flatMap((t) => t.taskLogs || []);
+      // handle both lowercase and capitalized association names
+      const projects = user.projects || user.Projects || [];
+      const tasks = projects.flatMap((p) => p.tasks || p.Tasks || []);
+      const taskLogs = tasks.flatMap((t) => t.taskLogs || t.TaskLogs || []);
 
       const totalProjects = projects.length;
       const totalTasks = tasks.length;

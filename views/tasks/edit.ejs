@@ -95,9 +95,14 @@ function loadProjects(userId) {
   projectSelect.innerHTML = '<option value="">-- Select Project --</option>';
 
   const user = users.find(u => u.user_id == userId);
-  if (!user || !user.projects) return;
+  if (!user) return;
 
-  user.projects.forEach(p => {
+  // association data may come back under "Projects" (capitalized) depending on how
+  // Sequelize was called, so check both variants
+  const userProjects = user.projects || user.Projects || [];
+  if (userProjects.length === 0) return;
+
+  userProjects.forEach(p => {
     const option = document.createElement('option');
     option.value = p.project_id;
     option.textContent = p.project_name;

@@ -77,9 +77,10 @@ exports.userPerformanceReport = async (req, res) => {
 
     // 🔥 Calculate stats for each user
     const formatted = users.map((user) => {
-      const projects = user.projects || [];
-      const tasks = projects.flatMap((p) => p.tasks || []);
-      const taskLogs = tasks.flatMap((t) => t.taskLogs || []);
+      // Sequelize returns associations with capitalized names by default
+      const projects = user.projects || user.Projects || [];
+      const tasks = projects.flatMap((p) => p.tasks || p.Tasks || []);
+      const taskLogs = tasks.flatMap((t) => t.taskLogs || t.TaskLogs || []);
 
       const totalProjects = projects.length;
       const totalTasks = tasks.length;
