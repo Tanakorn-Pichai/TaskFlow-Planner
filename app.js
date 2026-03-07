@@ -618,11 +618,28 @@ app.get("/reports", isAuth, async (req, res) => {
   try {
     const response = await axios.get(`${BACKEND_URL}/reports/longest-tasks`);
     const longest = response.data.data || [];
-    res.render("reports/report1", { longest, user: req.session.user });
+    // compute summary like backend does to avoid undefined in view
+    const summary = {
+      totalTime: longest.reduce((sum, t) => sum + (t.totalMinutes || 0), 0),
+      totalLogs: longest.reduce((sum, t) => sum + (t.logCount || 0), 0),
+      averageTime:
+        longest.length > 0
+          ? (
+              longest.reduce((sum, t) => sum + (t.totalMinutes || 0), 0) /
+              longest.length
+            ).toFixed(2)
+          : 0,
+    };
+    res.render("reports/report1", { longest, summary, user: req.session.user });
   } catch (error) {
     console.error("Error fetching report:", error.message);
     req.flash("error", "Failed to load report");
-    res.render("reports/report1", { longest: [], user: req.session.user });
+    // still pass an empty summary to prevent view errors
+    res.render("reports/report1", {
+      longest: [],
+      summary: { totalTime: 0, totalLogs: 0, averageTime: 0 },
+      user: req.session.user,
+    });
   }
 });
 

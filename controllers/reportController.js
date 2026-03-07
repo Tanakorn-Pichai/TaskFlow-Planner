@@ -38,7 +38,14 @@ exports.longestTasks = async (req, res) => {
       .sort((a, b) => b.totalMinutes - a.totalMinutes)
       .slice(0, 5);
 
-    res.render("reports/report1", { longest });
+    // compute a simple summary for the top‑5 list
+    const summary = {
+      totalTime: longest.reduce((sum, t) => sum + t.totalMinutes, 0),
+      totalLogs: longest.reduce((sum, t) => sum + t.logCount, 0),
+      averageTime: longest.length > 0 ? (longest.reduce((sum, t) => sum + t.totalMinutes, 0) / longest.length).toFixed(2) : 0,
+    };
+
+    res.render("reports/report1", { longest, summary });
   } catch (error) {
     console.error(error);
     res.send("Error generating longest task report");

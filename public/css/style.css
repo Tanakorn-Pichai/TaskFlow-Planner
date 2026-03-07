@@ -1307,6 +1307,8 @@ body.dark-mode .recent-card {
 .table-wrapper {
   max-height: 320px;
   overflow-y: auto;
+  /* allow horizontal scrolling too so wide tables (like report1) don’t hide columns */
+  overflow-x: auto;
 }
 
 /* ทำ header sticky */

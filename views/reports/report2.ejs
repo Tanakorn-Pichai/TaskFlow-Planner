@@ -15,6 +15,7 @@
 <button onclick="window.print()" class="btn-print">🖨 Print Report</button>
 <input type="text" class="table-search" placeholder="Search...">
 
+<div class="table-wrapper">
 <table class="styled-table data-table">
   <thead>
     <tr>
@@ -47,6 +48,7 @@
     <% } %>
   </tbody>
 </table>
+</div>
 
 <script>
   const currentUserId = <%= user.user_id %>;

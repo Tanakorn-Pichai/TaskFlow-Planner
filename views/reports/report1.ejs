@@ -1,15 +1,19 @@
 <%- include('../partials/header') %>
-  <h2>⏱ Top 5 Longest Tasks</h2>
+
+<h1>⏱ Top 5 Longest Tasks</h1>
 <div class="print-header">
-  
   <p>Date: <%= new Date().toLocaleDateString('en-GB') %></p>
   <hr>
 </div>
+
+<div style="margin-bottom:10px;">
+</div>
+
 <button onclick="window.print()" class="btn-print">🖨 Print Report</button>
 <input type="text" class="table-search" placeholder="Search...">
 
+<div class="table-wrapper">
 <table class="styled-table data-table">
-  
 
 <thead>
 <tr>
@@ -22,6 +26,7 @@
 </thead>
 
 <tbody>
+
 <% longest.forEach(t => { %>
 <tr>
   <td><%= t.title %></td>
@@ -31,8 +36,33 @@
   <td data-value="<%= t.logCount %>"><%= t.logCount %></td>
 </tr>
 <% }) %>
+
+<!-- summary -->
+<tr class="summary-row">
+  <td></td>
+  <td></td>
+  <td><strong>Summary (top 5)</strong></td>
+  <td data-value="<%= summary.totalTime %>"><strong><%= summary.totalTime %></strong></td>
+  <td data-value="<%= summary.totalLogs %>"><strong><%= summary.totalLogs %></strong></td>
+</tr>
+
+<tr class="summary-row">
+  <td></td>
+  <td></td>
+  <td><strong>Average time (min)</strong></td>
+  <td colspan="2" data-value="<%= summary.averageTime %>">
+    <strong><%= summary.averageTime %></strong>
+  </td>
+</tr>
+
 </tbody>
+
 </table>
+</div>
+
+<script>
+  const currentUserId = <%= user ? user.user_id : 'null' %>;
+</script>
 
 <script src="/js/table.js"></script>
 

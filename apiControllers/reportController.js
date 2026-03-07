@@ -29,13 +29,13 @@ exports.longestTasks = async (req, res) => {
         title: task.title,
         project: task.Project?.project_name || "-",
         owner: task.Project?.User?.name || "-",
-        totalHours: totalMinutes,
+        totalMinutes: totalMinutes,
         logCount: task.TaskLogs.length,
       };
     });
 
     const longest = result
-      .sort((a, b) => b.totalHours - a.totalHours)
+      .sort((a, b) => b.totalMinutes - a.totalMinutes)
       .slice(0, 5);
 
     res.json({ success: true, report: 'longest_tasks', data: longest });
