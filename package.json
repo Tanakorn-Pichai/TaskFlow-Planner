@@ -2,14 +2,12 @@
   "name": "taskflow-planner",
   "version": "1.0.0",
   "description": "Project Full Stack",
-  "main": "index.js",
+  "main": "index.js", 
+  
   "scripts": {
-    "start": "concurrently \"node server.js\" \"node app.js\"",
-    "dev": "concurrently \"nodemon server.js\" \"nodemon app.js\"",
-    "backend": "node server.js",
-    "backend:dev": "nodemon server.js",
-    "frontend": "node app.js",
-    "frontend:dev": "nodemon app.js",
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+   
     "seed": "node database/seed.js"
   },
   "repository": {
